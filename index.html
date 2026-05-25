@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Maratón Barcelona · 15 Semanas</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --bg: #0a0a0c; --surface: #131315; --surface2: #1a1a1d;
+    --accent: #ff6b35; --accent2: #e8ff47; --text: #f0f0f0;
+    --muted: #555; --run: #4ade80; --gym: #60a5fa; --upper: #c084fc; --long: #f59e0b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; padding: 40px 20px; }
+
+  .hero { text-align: center; margin-bottom: 48px; position: relative; }
+  .hero::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 500px; height: 200px; background: radial-gradient(ellipse, rgba(255,107,53,0.07) 0%, transparent 70%); pointer-events: none; }
+  .hero-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 88px); line-height: 0.9; letter-spacing: 2px; }
+  h1 span { color: var(--accent); }
+  .hero-sub { margin-top: 16px; color: var(--muted); font-size: 14px; letter-spacing: 1px; }
+
+  .legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  .sync-status { text-align: center; font-size: 11px; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; height: 16px; }
+  .sync-status.ok { color: var(--run); }
+  .sync-status.err { color: #f87171; }
+
+  .progress-wrap { max-width: 1200px; margin: 0 auto 40px; background: var(--surface); border: 1px solid #1e1e22; border-radius: 12px; padding: 18px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .progress-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .progress-bar-outer { flex: 1; min-width: 120px; height: 6px; background: #222; border-radius: 99px; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; width: 0%; }
+  .progress-count { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--accent); white-space: nowrap; }
+  .progress-reset { font-size: 11px; color: #444; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; border: 1px solid #2a2a2e; padding: 5px 12px; border-radius: 6px; transition: color 0.15s, border-color 0.15s; background: none; white-space: nowrap; }
+  .progress-reset:hover { color: var(--accent); border-color: var(--accent); }
+
+  .weeks-container { max-width: 1200px; margin: 0 auto; }
+  .block-header { display: flex; align-items: center; gap: 16px; margin: 40px 0 20px; }
+  .block-tag { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; padding: 6px 16px; border-radius: 4px; text-transform: uppercase; }
+  .block-tag.b1 { background: rgba(96,165,250,0.12); color: var(--gym); border: 1px solid rgba(96,165,250,0.25); }
+  .block-tag.b2 { background: rgba(74,222,128,0.1); color: var(--run); border: 1px solid rgba(74,222,128,0.25); }
+  .block-tag.b3 { background: rgba(255,107,53,0.12); color: var(--accent); border: 1px solid rgba(255,107,53,0.25); }
+  .block-tag.b4 { background: rgba(232,255,71,0.1); color: var(--accent2); border: 1px solid rgba(232,255,71,0.25); }
+  .block-desc { font-size: 13px; color: var(--muted); }
+
+  .col-headers { display: grid; grid-template-columns: 72px repeat(5, 1fr); gap: 5px; margin-bottom: 8px; }
+  .col-header { text-align: center; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); padding: 7px; background: var(--surface2); border-radius: 6px; }
+  .col-header:first-child { background: transparent; }
+
+  .week-row { display: grid; grid-template-columns: 72px repeat(5, 1fr); gap: 5px; margin-bottom: 5px; align-items: stretch; }
+  .week-label { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-right: 10px; }
+  .week-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; line-height: 1; color: var(--muted); }
+  .week-num span { font-size: 10px; font-family: 'DM Sans', sans-serif; display: block; letter-spacing: 1px; color: #333; text-transform: uppercase; }
+
+  .day-card { background: var(--surface); border: 1px solid #1c1c1f; border-radius: 9px; padding: 12px; position: relative; overflow: hidden; transition: transform 0.15s, border-color 0.15s; cursor: pointer; user-select: none; }
+  .day-card:hover { transform: translateY(-2px); border-color: #2a2a2e; }
+  .day-card:active { transform: scale(0.97); }
+  .day-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 9px 9px 0 0; }
+  .day-card.gym::before { background: var(--gym); }
+  .day-card.upper::before { background: var(--upper); }
+  .day-card.intervals::before { background: var(--accent); }
+  .day-card.easy::before { background: var(--run); }
+  .day-card.long::before { background: var(--long); }
+  .day-card.race::before { background: var(--accent2); }
+
+  .day-name { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .day-type { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.2; }
+  .day-card.gym .day-type { color: var(--gym); }
+  .day-card.upper .day-type { color: var(--upper); }
+  .day-card.intervals .day-type { color: var(--accent); }
+  .day-card.easy .day-type { color: var(--run); }
+  .day-card.long .day-type { color: var(--long); }
+  .day-card.race .day-type { color: var(--accent2); }
+
+  .day-detail { font-size: 11px; color: #777; line-height: 1.55; }
+  .day-detail strong { color: #999; font-weight: 500; }
+
+  .day-card.done { opacity: 0.4; border-color: #1c1c1f !important; transform: none !important; }
+  .day-card.done::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 44px; color: rgba(74,222,128,0.45); font-weight: 900; pointer-events: none; z-index: 2; }
+  .day-card.done .day-type, .day-card.done .day-detail, .day-card.done .day-name { opacity: 0.4; }
+  .day-card.loading { pointer-events: none; opacity: 0.6; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; max-width: 1200px; margin: 48px auto 0; }
+  .summary-card { background: var(--surface); border: 1px solid #1e1e22; border-radius: 12px; padding: 20px; text-align: center; }
+  .summary-num { font-family: 'Bebas Neue', sans-serif; font-size: 46px; color: var(--accent); line-height: 1; }
+  .summary-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+  .footer { text-align: center; margin-top: 48px; font-size: 12px; color: #2a2a2a; letter-spacing: 1px; }
+
+  @media (max-width: 750px) {
+    .week-row { grid-template-columns: 50px repeat(2, 1fr); }
+    .col-headers { grid-template-columns: 50px repeat(2, 1fr); }
+    .week-row .day-card:nth-child(n+4) { display: none; }
+    .col-header:nth-child(n+4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Plan personalizado · 15 semanas · Barcelona febrero</div>
+  <h1>MEDIA<br><span>MARATÓN</span><br>PLAN</h1>
+  <div class="hero-sub">Objetivo: Sub 1:50h · Ritmo ~5:13/km · 5 días/semana · Progresión gradual</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gym)"></div> Fuerza piernas/core</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--upper)"></div> Fuerza tren superior</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Intervalos / Tempo</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--run)"></div> Rodaje suave</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--long)"></div> Tirada larga</div>
+</div>
+<br>
+
+<div class="sync-status" id="syncStatus">Cargando progreso...</div>
+
+<div class="progress-wrap">
+  <span class="progress-label">Progreso</span>
+  <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+  <span class="progress-count" id="progressCount">0 / 75</span>
+  <button class="progress-reset" onclick="resetAll()">Reiniciar</button>
+</div>
+
+<div class="weeks-container">
+
+<!-- BLOQUE 1 -->
+<div class="block-header">
+  <div class="block-tag b1">Bloque 1</div>
+  <div class="block-desc">Semanas 1–3 · Base aeróbica + activación fuerza · Ritmo cómodo 6:00–5:45/km · Volumen moderado</div>
+</div>
+<div class="col-headers">
+  <div class="col-header"></div>
+  <div class="col-header">Lunes · Piernas</div>
+  <div class="col-header">Martes · Intervalos</div>
+  <div class="col-header">Jueves · Rodaje</div>
+  <div class="col-header">Sábado · Superior</div>
+  <div class="col-header">Domingo · Larga</div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">01<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c0"><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x12</strong><br>P. muerto rom. <strong>3x12</strong><br>Zancadas <strong>3x12</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x20</strong></div></div>
+  <div class="day-card intervals" data-id="c1"><div class="day-name">Martes</div><div class="day-type">⚡ 6x600m</div><div class="day-detail">Ritmo <strong>5:40/km</strong><br>Rec. <strong>2' andando</strong><br>+ 10' calent.<br>+ 5' vuelta calma</div></div>
+  <div class="day-card easy" data-id="c2"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>6 km</strong><br>Ritmo <strong>6:10/km</strong><br>Conversacional</div></div>
+  <div class="day-card upper" data-id="c3"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x12</strong><br>Remo barra <strong>3x12</strong><br>Press militar <strong>3x12</strong><br>Jalón polea <strong>3x12</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div></div>
+  <div class="day-card long" data-id="c4"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>6:00/km</strong><br>Constante</div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">02<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c5"><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x12</strong><br>P. muerto rom. <strong>3x12</strong><br>Zancadas <strong>3x12</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x20</strong></div></div>
+  <div class="day-card intervals" data-id="c6"><div class="day-name">Martes</div><div class="day-type">⚡ 6x800m</div><div class="day-detail">Ritmo <strong>5:35/km</strong><br>Rec. <strong>2' andando</strong></div></div>
+  <div class="day-card easy" data-id="c7"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>7 km</strong><br>Ritmo <strong>6:05/km</strong></div></div>
+  <div class="day-card upper" data-id="c8"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x12</strong><br>Remo barra <strong>3x12</strong><br>Press militar <strong>3x12</strong><br>Jalón polea <strong>3x12</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div></div>
+  <div class="day-card long" data-id="c9"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:55/km</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">03<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c10"><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x15</strong><br>P. muerto rom. <strong>3x15</strong><br>Zancadas <strong>3x15</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x15</strong><br>Gemelos <strong>3x25</strong></div></div>
+  <div class="day-card intervals" data-id="c11"><div class="day-name">Martes</div><div class="day-type">⚡ 8x600m</div><div class="day-detail">Ritmo <strong>5:30/km</strong><br>Rec. <strong>90" andando</strong><br><strong>🧪 Test 5km</strong></div></div>
+  <div class="day-card easy" data-id="c12"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>7 km</strong><br>Ritmo <strong>6:00/km</strong></div></div>
+  <div class="day-card upper" data-id="c13"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x10</strong><br>Remo barra <strong>4x10</strong><br>Press militar <strong>3x10</strong><br>Jalón polea <strong>4x10</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div></div>
+  <div class="day-card long" data-id="c14"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>11 km</strong><br>Ritmo <strong>5:50/km</strong><br><strong>🧪 Test 5km a tope</strong></div></div>
+</div>
+
+<!-- BLOQUE 2 -->
+<div class="block-header">
+  <div class="block-tag b2">Bloque 2</div>
+  <div class="block-desc">Semanas 4–7 · Construcción de volumen + fuerza máxima · Ritmo 5:45–5:25/km · Tiradas hasta 15km</div>
+</div>
+<div class="col-headers">
+  <div class="col-header"></div>
+  <div class="col-header">Lunes · Piernas</div>
+  <div class="col-header">Martes · Intervalos</div>
+  <div class="col-header">Jueves · Rodaje</div>
+  <div class="col-header">Sábado · Superior</div>
+  <div class="col-header">Domingo · Larga</div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">04<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c15"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x8</strong><br>P. muerto barra <strong>4x8</strong><br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x8</strong><br>Face pull polea <strong>3x15</strong><br>Crunch polea <strong>3x12</strong></div></div>
+  <div class="day-card intervals" data-id="c16"><div class="day-name">Martes</div><div class="day-type">⚡ 5x1km</div><div class="day-detail">Ritmo <strong>5:25/km</strong><br>Rec. <strong>2' andando</strong></div></div>
+  <div class="day-card easy" data-id="c17"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:55/km</strong></div></div>
+  <div class="day-card upper" data-id="c18"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x8</strong><br>Remo barra <strong>4x8</strong><br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Plank <strong>3x50"</strong></div></div>
+  <div class="day-card long" data-id="c19"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>12 km</strong><br>Ritmo <strong>5:45/km</strong><br>Últimos 2km <strong>5:25</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">05<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c20"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x8</strong> ↑<br>P. muerto barra <strong>4x8</strong> ↑<br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x8</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x12</strong></div></div>
+  <div class="day-card intervals" data-id="c21"><div class="day-name">Martes</div><div class="day-type">⚡ 6x1km</div><div class="day-detail">Ritmo <strong>5:22/km</strong><br>Rec. <strong>2' andando</strong></div></div>
+  <div class="day-card easy" data-id="c22"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong></div></div>
+  <div class="day-card upper" data-id="c23"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x8</strong> ↑<br>Remo barra <strong>4x8</strong> ↑<br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Dead bug <strong>3x10</strong></div></div>
+  <div class="day-card long" data-id="c24"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>13 km</strong><br>Ritmo <strong>5:42/km</strong><br>Últimos 2km <strong>5:20</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">06<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c25"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x6</strong> ↑<br>P. muerto barra <strong>4x6</strong> ↑<br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x6</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x15</strong></div></div>
+  <div class="day-card intervals" data-id="c26"><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 8km</div><div class="day-detail"><strong>8 km continuos</strong><br>Ritmo <strong>5:30/km</strong><br>Ritmo umbral</div></div>
+  <div class="day-card easy" data-id="c27"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:50/km</strong></div></div>
+  <div class="day-card upper" data-id="c28"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x8</strong><br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Rotación polea <strong>3x12</strong></div></div>
+  <div class="day-card long" data-id="c29"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>14 km</strong><br>Ritmo <strong>5:40/km</strong><br>Últimos 3km <strong>5:18</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">07<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c30"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x6</strong> ↑<br>P. muerto barra <strong>4x6</strong> ↑<br>Step-up <strong>4x6</strong><br>Hip thrust barra <strong>4x6</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x15</strong></div></div>
+  <div class="day-card intervals" data-id="c31"><div class="day-name">Martes</div><div class="day-type">⚡ 4x2km</div><div class="day-detail">Ritmo <strong>5:20/km</strong><br>Rec. <strong>2'30" andando</strong><br><strong>🧪 Test 10km</strong></div></div>
+  <div class="day-card easy" data-id="c32"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:45/km</strong></div></div>
+  <div class="day-card upper" data-id="c33"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong> ↑<br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Plank din. <strong>3x45"</strong></div></div>
+  <div class="day-card long" data-id="c34"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>15 km</strong><br>Ritmo <strong>5:38/km</strong><br><strong>🧪 Test 10km a tope</strong></div></div>
+</div>
+
+<!-- BLOQUE 3 -->
+<div class="block-header">
+  <div class="block-tag b3">Bloque 3</div>
+  <div class="block-desc">Semanas 8–12 · Velocidad específica + potencia · Ritmo objetivo 5:13/km · Tiradas hasta 18km</div>
+</div>
+<div class="col-headers">
+  <div class="col-header"></div>
+  <div class="col-header">Lunes · Piernas</div>
+  <div class="col-header">Martes · Intervalos</div>
+  <div class="col-header">Jueves · Rodaje</div>
+  <div class="col-header">Sábado · Superior</div>
+  <div class="col-header">Domingo · Larga</div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">08<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c35"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div></div>
+  <div class="day-card intervals" data-id="c36"><div class="day-name">Martes</div><div class="day-type">⚡ 6x1km</div><div class="day-detail">Ritmo <strong>5:18/km</strong><br>Rec. <strong>2' andando</strong></div></div>
+  <div class="day-card easy" data-id="c37"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:45/km</strong></div></div>
+  <div class="day-card upper" data-id="c38"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong><br>Remo barra <strong>4x6</strong><br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Core: plank <strong>3x55"</strong></div></div>
+  <div class="day-card long" data-id="c39"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>15 km</strong><br>Ritmo <strong>5:35/km</strong><br>Últimos 3km <strong>5:15</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">09<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c40"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div></div>
+  <div class="day-card intervals" data-id="c41"><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 10km</div><div class="day-detail"><strong>10 km continuos</strong><br>Ritmo <strong>5:25/km</strong><br>Umbral aeróbico</div></div>
+  <div class="day-card easy" data-id="c42"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:45/km</strong></div></div>
+  <div class="day-card upper" data-id="c43"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong><br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Dead bug <strong>3x12</strong></div></div>
+  <div class="day-card long" data-id="c44"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>16 km</strong><br>Ritmo <strong>5:32/km</strong><br>Últimos 3km <strong>5:13</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">10<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c45"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div></div>
+  <div class="day-card intervals" data-id="c46"><div class="day-name">Martes</div><div class="day-type">⚡ 3x3km</div><div class="day-detail">Ritmo <strong>5:15/km</strong><br>Rec. <strong>3' andando</strong></div></div>
+  <div class="day-card easy" data-id="c47"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:40/km</strong></div></div>
+  <div class="day-card upper" data-id="c48"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong> ↑<br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Rotación polea <strong>3x12</strong></div></div>
+  <div class="day-card long" data-id="c49"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>17 km</strong><br>Ritmo <strong>5:30/km</strong><br>Últimos 4km <strong>5:13</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">11<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c50"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div></div>
+  <div class="day-card intervals" data-id="c51"><div class="day-name">Martes</div><div class="day-type">⚡ 4x3km</div><div class="day-detail">Ritmo <strong>5:13/km</strong><br>Rec. <strong>3' andando</strong></div></div>
+  <div class="day-card easy" data-id="c52"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:40/km</strong></div></div>
+  <div class="day-card upper" data-id="c53"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>Core: plank din. <strong>3x50"</strong></div></div>
+  <div class="day-card long" data-id="c54"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>18 km</strong><br>Ritmo <strong>5:28/km</strong><br>Últimos 5km <strong>5:13</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">12<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c55"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>3x8</strong><br>Step-up explos. <strong>3x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>3x8</strong><br>Rotación polea <strong>3x12</strong><br>↓ Semana recuperación</div></div>
+  <div class="day-card intervals" data-id="c56"><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 8km</div><div class="day-detail"><strong>8 km continuos</strong><br>Ritmo <strong>5:20/km</strong><br>Semana descarga<br><strong>🧪 Test 10km</strong></div></div>
+  <div class="day-card easy" data-id="c57"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong><br>Recuperación activa</div></div>
+  <div class="day-card upper" data-id="c58"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>Sesión ligera</div></div>
+  <div class="day-card long" data-id="c59"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>14 km</strong><br>Ritmo <strong>5:35/km</strong><br><strong>🧪 Test 10km a tope</strong></div></div>
+</div>
+
+<!-- BLOQUE 4 -->
+<div class="block-header">
+  <div class="block-tag b4">Bloque 4</div>
+  <div class="block-desc">Semanas 13–15 · Simulacros + tapering · Reducir volumen, mantener intensidad · Llegar fresco a Barcelona</div>
+</div>
+<div class="col-headers">
+  <div class="col-header"></div>
+  <div class="col-header">Lunes · Piernas</div>
+  <div class="col-header">Martes · Intervalos</div>
+  <div class="col-header">Jueves · Rodaje</div>
+  <div class="col-header">Sábado · Superior</div>
+  <div class="col-header">Domingo · Larga</div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">13<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c60"><div class="day-name">Lunes</div><div class="day-type">💪 Mantenimiento</div><div class="day-detail">Sent. búlgara <strong>3x8</strong><br>P. muerto rom. <strong>3x8</strong><br>Hip thrust <strong>3x8</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x15</strong><br>↓ Volumen</div></div>
+  <div class="day-card intervals" data-id="c61"><div class="day-name">Martes</div><div class="day-type">⚡ Simulacro 15km</div><div class="day-detail"><strong>15 km</strong> continuos<br>Ritmo <strong>5:13/km</strong><br>Simula la carrera</div></div>
+  <div class="day-card easy" data-id="c62"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong></div></div>
+  <div class="day-card upper" data-id="c63"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>↓ Volumen semana</div></div>
+  <div class="day-card long" data-id="c64"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>16 km</strong><br>Ritmo <strong>5:25/km</strong><br>Últimos 5km <strong>5:13</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">14<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c65"><div class="day-name">Lunes</div><div class="day-type">💪 Tapering</div><div class="day-detail">Sent. búlgara <strong>2x8</strong><br>P. muerto rom. <strong>2x8</strong><br>Hip thrust <strong>2x8</strong><br>Pallof press <strong>2x12</strong><br>Gemelos <strong>2x15</strong><br>Solo activación</div></div>
+  <div class="day-card intervals" data-id="c66"><div class="day-name">Martes</div><div class="day-type">⚡ 4x1km</div><div class="day-detail">Ritmo <strong>5:05/km</strong><br>Rec. <strong>2' andando</strong><br>Piernas frescas</div></div>
+  <div class="day-card easy" data-id="c67"><div class="day-name">Jueves</div><div class="day-type">🏃 Trote suave</div><div class="day-detail"><strong>6 km</strong><br>Ritmo <strong>6:00/km</strong><br>Muy suave</div></div>
+  <div class="day-card upper" data-id="c68"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tapering</div><div class="day-detail">Press banca <strong>2x8</strong><br>Remo barra <strong>2x8</strong><br>Press militar <strong>2x8</strong><br>Jalón polea <strong>2x8</strong><br>Face pull <strong>2x15</strong><br>Sesión muy ligera</div></div>
+  <div class="day-card long" data-id="c69"><div class="day-name">Domingo</div><div class="day-type">📏 Última larga</div><div class="day-detail"><strong>12 km</strong><br>Ritmo <strong>5:25/km</strong><br>Últimos 3km <strong>5:13</strong></div></div>
+</div>
+
+<div class="week-row">
+  <div class="week-label"><div class="week-num">15<span>sem</span></div></div>
+  <div class="day-card gym" data-id="c70"><div class="day-name">Lunes</div><div class="day-type">💪 Activación</div><div class="day-detail">Sentadilla <strong>2x10</strong> ligero<br>Hip thrust <strong>2x10</strong><br>Gemelos <strong>2x15</strong><br>Plank <strong>2x30"</strong><br>Solo activar<br>Sin fatiga</div></div>
+  <div class="day-card intervals" data-id="c71"><div class="day-name">Martes</div><div class="day-type">⚡ 3x1km</div><div class="day-detail">Ritmo <strong>5:10/km</strong><br>Rec. <strong>2' andando</strong><br>Última sesión dura</div></div>
+  <div class="day-card easy" data-id="c72"><div class="day-name">Jueves</div><div class="day-type">🏃 Trote suave</div><div class="day-detail"><strong>4 km</strong><br>Ritmo <strong>6:30/km</strong><br>Muy suave, estirar</div></div>
+  <div class="day-card upper" data-id="c73"><div class="day-name">Sábado</div><div class="day-type">😴 Descanso</div><div class="day-detail">Descanso total<br>Hidratación<br>Prepara el dorsal<br>Duerme bien 🙌</div></div>
+  <div class="day-card race" data-id="c74"><div class="day-name">Domingo</div><div class="day-type">🏁 BARCELONA</div><div class="day-detail"><strong>21,1 km</strong><br>Objetivo: <strong>&lt; 1:50h</strong><br>Ritmo: <strong>5:13/km</strong><br>🔥 A por ello</div></div>
+</div>
+
+</div><!-- end weeks-container -->
+
+<div class="summary-grid">
+  <div class="summary-card"><div class="summary-num">15</div><div class="summary-label">Semanas de plan</div></div>
+  <div class="summary-card"><div class="summary-num">75</div><div class="summary-label">Sesiones totales</div></div>
+  <div class="summary-card"><div class="summary-num">18</div><div class="summary-label">km tirada máxima</div></div>
+  <div class="summary-card"><div class="summary-num" style="font-size:28px">Sub 1:50</div><div class="summary-label">Objetivo Barcelona</div></div>
+</div>
+
+<div class="footer">Plan diseñado por Claude · Media Maratón Barcelona · gbfoods 2026</div>
+
+<script>
+  const SUPABASE_URL = 'https://leracqkcmmgguffvnfkw.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlcmFjcWtjbW1nZ3VmZnZuZmt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MzU0NjksImV4cCI6MjA5NTMxMTQ2OX0.pE5QvopE7-3qrs3EafqFpU9bxfdYE9eOF_9yXEYGn1E';
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const TOTAL = 75;
+  const done = new Set();
+
+  function setStatus(msg, type = '') {
+    const el = document.getElementById('syncStatus');
+    el.textContent = msg;
+    el.className = 'sync-status ' + type;
+  }
+
+  function updateProgress() {
+    const pct = (done.size / TOTAL) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = done.size + ' / ' + TOTAL;
+  }
+
+  async function loadProgress() {
+    try {
+      const { data, error } = await db.from('progress').select('card_id').eq('done', true);
+      if (error) throw error;
+      data.forEach(row => done.add(row.card_id));
+      document.querySelectorAll('.day-card').forEach(card => {
+        if (done.has(card.dataset.id)) card.classList.add('done');
+      });
+      updateProgress();
+      setStatus('✓ Progreso sincronizado', 'ok');
+      setTimeout(() => setStatus(''), 2000);
+    } catch (e) {
+      setStatus('Error al cargar progreso', 'err');
+    }
+  }
+
+  async function toggleCard(card) {
+    const id = card.dataset.id;
+    card.classList.add('loading');
+    try {
+      if (done.has(id)) {
+        const { error } = await db.from('progress').delete().eq('card_id', id);
+        if (error) throw error;
+        done.delete(id);
+        card.classList.remove('done');
+      } else {
+        const { error } = await db.from('progress').upsert({ card_id: id, done: true });
+        if (error) throw error;
+        done.add(id);
+        card.classList.add('done');
+      }
+      updateProgress();
+      setStatus('✓ Guardado', 'ok');
+      setTimeout(() => setStatus(''), 1500);
+    } catch (e) {
+      setStatus('Error al guardar', 'err');
+    }
+    card.classList.remove('loading');
+  }
+
+  async function resetAll() {
+    if (!confirm('¿Reiniciar todo el progreso?')) return;
+    try {
+      const { error } = await db.from('progress').delete().neq('card_id', '');
+      if (error) throw error;
+      done.clear();
+      document.querySelectorAll('.day-card').forEach(c => c.classList.remove('done'));
+      updateProgress();
+      setStatus('✓ Progreso reiniciado', 'ok');
+      setTimeout(() => setStatus(''), 2000);
+    } catch (e) {
+      setStatus('Error al reiniciar', 'err');
+    }
+  }
+
+  document.querySelectorAll('.day-card').forEach(card => {
+    card.addEventListener('click', () => toggleCard(card));
+    card.title = 'Clic para marcar como hecho';
+  });
+
+  loadProgress();
+</script>
+</body>
+</html>
