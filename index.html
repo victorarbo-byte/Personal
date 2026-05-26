@@ -144,44 +144,42 @@
     .user-badge-wrap { padding: 0 16px; }
     .legend { padding: 0 16px; gap: 10px; }
     .sync-status { padding: 0 16px; }
-
-    /* Progress */
     .progress-wrap { margin: 0 16px 24px; padding: 14px 16px; }
 
     /* Hide desktop grid elements */
     .col-headers { display: none; }
-    .block-header { padding: 0 16px; margin: 24px 0 12px; }
-    .block-desc { display: none; }
+    .block-header { display: none; }
 
     /* WEEK SLIDER */
-    .weeks-container { overflow: hidden; padding: 0; }
+    .weeks-container { overflow: hidden; padding: 0; position: relative; }
     .week-slider { display: flex; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
-    .week-slide { min-width: 100vw; padding: 0 16px 16px; box-sizing: border-box; }
+    .week-slide { min-width: 100vw; padding: 0 16px 80px; box-sizing: border-box; }
+
+    /* Slide header */
     .week-slide-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 10px 14px; background: var(--surface); border-radius: 10px; border: 1px solid #1e1e22; }
     .week-slide-label { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--muted); line-height: 1; }
     .week-slide-label span { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 2px; color: #333; display: block; text-transform: uppercase; }
     .week-slide-block { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
-    /* Cards in mobile: vertical stack */
+    /* Cards vertical stack */
     .week-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 0; }
     .week-label { display: none; }
-    .day-card { padding: 14px 14px 48px; border-radius: 12px; }
+    .day-card { padding: 14px 14px 52px; border-radius: 12px; }
     .day-name { font-size: 10px; }
     .day-type { font-size: 14px; }
     .day-detail { font-size: 12px; }
     .card-ticks { bottom: 10px; left: 10px; right: 10px; }
     .tick-btn { padding: 8px 10px; font-size: 12px; }
 
-    /* Nav arrows */
-    .week-nav { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px; }
-    .week-nav-btn { background: var(--surface); border: 1px solid #2a2a2e; color: var(--text); width: 44px; height: 44px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; }
-    .week-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .week-nav-btn:disabled { opacity: 0.3; pointer-events: none; }
-    .week-nav-counter { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--muted); min-width: 70px; text-align: center; }
+    /* Nav — fixed bottom bar */
+    .week-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex !important; align-items: center; justify-content: center; gap: 20px; padding: 12px 20px 28px; background: rgba(10,10,12,0.95); backdrop-filter: blur(10px); border-top: 1px solid #1e1e22; z-index: 100; }
+    .week-nav-btn { background: var(--surface); border: 1px solid #2a2a2e; color: var(--text); width: 48px; height: 48px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; }
+    .week-nav-btn:active { border-color: var(--accent); color: var(--accent); }
+    .week-nav-btn:disabled { opacity: 0.25; pointer-events: none; }
+    .week-nav-counter { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--muted); min-width: 80px; text-align: center; letter-spacing: 1px; }
 
-    /* Summary */
     .summary-grid { margin: 24px 16px 0; }
-    .footer { padding: 0 16px; }
+    .footer { padding: 0 16px 100px; }
   }
 </style>
 </head>
@@ -420,12 +418,6 @@
   <div class="day-card race" data-id="c74"><div class="day-name">Domingo</div><div class="day-type">🏁 BARCELONA</div><div class="day-detail"><strong>21,1 km</strong><br>Objetivo: <strong>&lt; 1:50h</strong><br>Ritmo: <strong>5:13/km</strong><br>🔥 A por ello</div><div class="card-ticks"><button class="tick-btn victor" data-id="c74" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c74" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
-  <!-- MOBILE NAV -->
-  <div class="week-nav" id="weekNav" style="display:none">
-    <button class="week-nav-btn" id="weekPrev" onclick="slideWeek(-1)">&#8592;</button>
-    <span class="week-nav-counter" id="weekCounter">1 / 15</span>
-    <button class="week-nav-btn" id="weekNext" onclick="slideWeek(1)">&#8594;</button>
-  </div>
 </div><!-- end weeks-container -->
 
 <div class="summary-grid">
@@ -597,32 +589,31 @@
   // ---- MOBILE WEEK SLIDER ----
   let currentSlide = 0;
   let totalSlides = 0;
+  let sliderInited = false;
 
   function initMobileSlider() {
-    if (window.innerWidth > 750) return;
+    if (window.innerWidth > 750 || sliderInited) return;
+    sliderInited = true;
 
     const container = document.querySelector('.weeks-container');
     const weekRows = Array.from(document.querySelectorAll('.week-row'));
     totalSlides = weekRows.length;
 
-    // Determine block name for each week-row
+    // Map block name per week
     const blockNames = [];
-    let currentBlock = '';
-    container.querySelectorAll('.block-header, .week-row').forEach(el => {
+    let currentBlock = 'Bloque 1';
+    Array.from(container.children).forEach(el => {
       if (el.classList.contains('block-header')) {
         currentBlock = el.querySelector('.block-tag').textContent.trim();
-      } else {
+      } else if (el.classList.contains('week-row')) {
         blockNames.push(currentBlock);
       }
     });
 
-    // Get week label from each row
-    const weekLabels = weekRows.map(row => {
-      const wn = row.querySelector('.week-num');
-      return wn ? wn.childNodes[0].textContent.trim() : '';
-    });
+    // Week numbers
+    const weekLabels = weekRows.map((row, i) => String(i + 1).padStart(2, '0'));
 
-    // Build slider wrapper
+    // Build slider
     const slider = document.createElement('div');
     slider.className = 'week-slider';
     slider.id = 'weekSlider';
@@ -631,40 +622,48 @@
       const slide = document.createElement('div');
       slide.className = 'week-slide';
 
-      // Slide header
       const header = document.createElement('div');
       header.className = 'week-slide-header';
-      header.innerHTML = `<div class="week-slide-label">${weekLabels[i]}<span>semana</span></div><div class="week-slide-block">${blockNames[i]}</div>`;
+      header.innerHTML = '<div class="week-slide-label">' + weekLabels[i] + '<span>semana</span></div><div class="week-slide-block">' + blockNames[i] + '</div>';
       slide.appendChild(header);
-
-      // Move week-row into slide
       slide.appendChild(row);
       slider.appendChild(slide);
     });
 
-    // Remove block headers and col-headers (hidden on mobile anyway)
-    container.querySelectorAll('.block-header, .col-headers').forEach(el => el.remove());
-
-    // Replace container content with slider
+    // Clear container and add slider + nav
     container.innerHTML = '';
     container.appendChild(slider);
 
-    // Re-add nav
-    const nav = document.getElementById('weekNav');
-    container.appendChild(nav);
-    nav.style.display = 'flex';
+    // Build nav
+    const nav = document.createElement('div');
+    nav.className = 'week-nav';
+    nav.id = 'weekNav';
+    nav.innerHTML = '<button class="week-nav-btn" id="weekPrev" onclick="slideWeek(-1)">&#8592;</button>' +
+                    '<span class="week-nav-counter" id="weekCounter">1 / ' + totalSlides + '</span>' +
+                    '<button class="week-nav-btn" id="weekNext" onclick="slideWeek(1)">&#8594;</button>';
+    document.body.appendChild(nav);
 
     updateSlider();
-    setupSwipe(slider);
+
+    // Swipe support
+    let startX = 0;
+    slider.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) slideWeek(diff > 0 ? 1 : -1);
+    }, { passive: true });
   }
 
   function updateSlider() {
     const slider = document.getElementById('weekSlider');
     if (!slider) return;
-    slider.style.transform = `translateX(-${currentSlide * 100}vw)`;
-    document.getElementById('weekCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
-    document.getElementById('weekPrev').disabled = currentSlide === 0;
-    document.getElementById('weekNext').disabled = currentSlide === totalSlides - 1;
+    slider.style.transform = 'translateX(-' + (currentSlide * 100) + 'vw)';
+    const counter = document.getElementById('weekCounter');
+    if (counter) counter.textContent = (currentSlide + 1) + ' / ' + totalSlides;
+    const prev = document.getElementById('weekPrev');
+    const next = document.getElementById('weekNext');
+    if (prev) prev.disabled = currentSlide === 0;
+    if (next) next.disabled = currentSlide === totalSlides - 1;
   }
 
   function slideWeek(dir) {
@@ -672,18 +671,9 @@
     updateSlider();
   }
 
-  function setupSwipe(el) {
-    let startX = 0;
-    el.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-    el.addEventListener('touchend', e => {
-      const diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) slideWeek(diff > 0 ? 1 : -1);
-    }, { passive: true });
-  }
-
-  if (window.innerWidth <= 750) initMobileSlider();
-  window.addEventListener('resize', () => {
-    if (window.innerWidth <= 750 && !document.getElementById('weekSlider')) initMobileSlider();
+  // Init after DOM + data ready
+  window.addEventListener('load', () => {
+    if (window.innerWidth <= 750) initMobileSlider();
   });
 </script>
 </body>
