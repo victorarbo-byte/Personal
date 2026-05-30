@@ -4,139 +4,332 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Media Maratón Barcelona · 15 Semanas</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg: #0a0a0c; --surface: #131315; --surface2: #1a1a1d;
-    --accent: #ff6b35; --accent2: #e8ff47; --text: #f0f0f0;
-    --muted: #555; --run: #4ade80; --gym: #60a5fa; --upper: #c084fc; --long: #f59e0b;
-    --victor: #ff6b35; --aina: #a78bfa;
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --surface2: #eeebe6;
+    --border: #e0dbd3;
+    --accent: #d93025;
+    --text: #1a1714;
+    --muted: #8c8480;
+    --run: #1a6b3c;
+    --gym: #1d5ca8;
+    --upper: #6d28a8;
+    --long: #b86a0a;
+    --race: #d93025;
+    --victor: #d93025;
+    --aina: #7c3aed;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; padding: 40px 20px; }
 
-  .hero { text-align: center; margin-bottom: 48px; position: relative; }
-  .hero::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 500px; height: 200px; background: radial-gradient(ellipse, rgba(255,107,53,0.07) 0%, transparent 70%); pointer-events: none; }
-  .hero-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
-  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 88px); line-height: 0.9; letter-spacing: 2px; }
-  h1 span { color: var(--accent); }
-  .hero-sub { margin-top: 16px; color: var(--muted); font-size: 14px; letter-spacing: 1px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 52px 24px;
+  }
 
-  /* USER BADGE */
+  /* ── HERO ── */
+  .hero { text-align: center; margin-bottom: 48px; }
+  .hero-label {
+    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(54px, 8vw, 100px);
+    line-height: 0.88; letter-spacing: -1px;
+    color: var(--text); font-weight: 900;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-divider {
+    width: 40px; height: 3px; background: var(--accent);
+    margin: 20px auto 16px; border-radius: 2px;
+  }
+  .hero-sub { color: var(--muted); font-size: 13px; letter-spacing: 0.3px; }
+  .hero-badges {
+    display: flex; justify-content: center; gap: 8px;
+    margin-top: 16px; flex-wrap: wrap;
+  }
+  .hero-badge {
+    font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 20px;
+    background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+  }
+  .hero-badge.red { border-color: var(--accent); color: var(--accent); background: rgba(217,48,37,0.05); }
+
+  /* ── USER BADGE ── */
   .user-badge-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
-  .user-badge { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid #2a2a2e; border-radius: 99px; padding: 8px 20px; font-size: 13px; }
+  .user-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 99px; padding: 8px 20px; font-size: 13px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
   .user-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .user-dot.victor { background: var(--victor); box-shadow: 0 0 8px rgba(255,107,53,0.6); }
-  .user-dot.aina { background: var(--aina); box-shadow: 0 0 8px rgba(167,139,250,0.6); }
+  .user-dot.victor { background: var(--victor); box-shadow: 0 0 8px rgba(217,48,37,0.4); }
+  .user-dot.aina { background: var(--aina); box-shadow: 0 0 8px rgba(124,58,237,0.4); }
   .user-name { font-weight: 600; }
   .user-name.victor { color: var(--victor); }
   .user-name.aina { color: var(--aina); }
-  .user-readonly { font-size: 10px; color: var(--muted); letter-spacing: 1px; background: #1e1e22; padding: 3px 8px; border-radius: 4px; margin-left: 4px; }
+  .user-readonly {
+    font-size: 10px; color: var(--muted); letter-spacing: 1px;
+    background: var(--surface2); padding: 3px 8px; border-radius: 4px; margin-left: 4px;
+    font-weight: 500;
+  }
 
-  .legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+  /* ── LEGEND ── */
+  .legend { display: flex; justify-content: center; gap: 18px; margin-bottom: 16px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
 
+  /* ── SYNC ── */
   .sync-status { text-align: center; font-size: 11px; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; height: 16px; }
   .sync-status.ok { color: var(--run); }
-  .sync-status.err { color: #f87171; }
+  .sync-status.err { color: var(--accent); }
 
-  /* DUAL PROGRESS */
-  .progress-wrap { max-width: 1200px; margin: 0 auto 40px; background: var(--surface); border: 1px solid #1e1e22; border-radius: 12px; padding: 18px 24px; display: flex; flex-direction: column; gap: 14px; }
+  /* ── DUAL PROGRESS ── */
+  .progress-wrap {
+    max-width: 1200px; margin: 0 auto 40px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 28px;
+    display: flex; flex-direction: column; gap: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
   .progress-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .progress-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; width: 64px; }
+  .progress-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; width: 64px; font-weight: 600; }
   .progress-label.victor { color: var(--victor); }
   .progress-label.aina { color: var(--aina); }
-  .progress-bar-outer { flex: 1; min-width: 120px; height: 6px; background: #222; border-radius: 99px; overflow: hidden; }
+  .progress-bar-outer { flex: 1; min-width: 120px; height: 5px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
   .progress-bar-inner { height: 100%; border-radius: 99px; transition: width 0.4s ease; width: 0%; }
   .progress-bar-inner.victor { background: var(--victor); }
   .progress-bar-inner.aina { background: var(--aina); }
-  .progress-count { font-family: 'Bebas Neue', sans-serif; font-size: 20px; white-space: nowrap; width: 60px; text-align: right; }
+  .progress-count { font-family: 'Playfair Display', serif; font-size: 20px; white-space: nowrap; width: 60px; text-align: right; font-weight: 700; }
   .progress-count.victor { color: var(--victor); }
   .progress-count.aina { color: var(--aina); }
-  .progress-reset { font-size: 11px; color: #444; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; border: 1px solid #2a2a2e; padding: 5px 12px; border-radius: 6px; transition: color 0.15s, border-color 0.15s; background: none; white-space: nowrap; align-self: flex-end; }
+  .progress-reset {
+    font-size: 10px; color: var(--muted); cursor: pointer; letter-spacing: 1.5px;
+    text-transform: uppercase; border: 1px solid var(--border); padding: 5px 14px;
+    border-radius: 6px; transition: color 0.15s, border-color 0.15s;
+    background: none; white-space: nowrap; align-self: flex-end;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+  }
   .progress-reset:hover { color: var(--accent); border-color: var(--accent); }
 
+  /* ── WEEKS ── */
   .weeks-container { max-width: 1200px; margin: 0 auto; }
-  .block-header { display: flex; align-items: center; gap: 16px; margin: 40px 0 20px; }
-  .block-tag { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; padding: 6px 16px; border-radius: 4px; text-transform: uppercase; }
-  .block-tag.b1 { background: rgba(96,165,250,0.12); color: var(--gym); border: 1px solid rgba(96,165,250,0.25); }
-  .block-tag.b2 { background: rgba(74,222,128,0.1); color: var(--run); border: 1px solid rgba(74,222,128,0.25); }
-  .block-tag.b3 { background: rgba(255,107,53,0.12); color: var(--accent); border: 1px solid rgba(255,107,53,0.25); }
-  .block-tag.b4 { background: rgba(232,255,71,0.1); color: var(--accent2); border: 1px solid rgba(232,255,71,0.25); }
-  .block-desc { font-size: 13px; color: var(--muted); }
+
+  .block-header {
+    display: flex; align-items: center; gap: 16px;
+    margin: 48px 0 20px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .block-tag {
+    font-size: 10px; letter-spacing: 3px; padding: 6px 16px;
+    border-radius: 20px; text-transform: uppercase; font-weight: 600;
+  }
+  .block-tag.b1 { background: rgba(29,92,168,0.07); color: var(--gym); border: 1px solid rgba(29,92,168,0.18); }
+  .block-tag.b2 { background: rgba(26,107,60,0.07); color: var(--run); border: 1px solid rgba(26,107,60,0.18); }
+  .block-tag.b3 { background: rgba(217,48,37,0.06); color: var(--accent); border: 1px solid rgba(217,48,37,0.18); }
+  .block-tag.b4 { background: rgba(184,106,10,0.07); color: var(--long); border: 1px solid rgba(184,106,10,0.18); }
+  .block-info { display: flex; flex-direction: column; gap: 2px; }
+  .block-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); }
+  .block-desc { font-size: 12px; color: var(--muted); }
 
   .col-headers { display: grid; grid-template-columns: 72px repeat(5, 1fr); gap: 5px; margin-bottom: 8px; }
-  .col-header { text-align: center; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); padding: 7px; background: var(--surface2); border-radius: 6px; }
+  .col-header {
+    text-align: center; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted); padding: 7px; background: var(--surface2); border-radius: 6px; font-weight: 500;
+  }
   .col-header:first-child { background: transparent; }
 
   .week-row { display: grid; grid-template-columns: 72px repeat(5, 1fr); gap: 5px; margin-bottom: 5px; align-items: stretch; }
   .week-label { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-right: 10px; }
-  .week-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; line-height: 1; color: var(--muted); }
-  .week-num span { font-size: 10px; font-family: 'DM Sans', sans-serif; display: block; letter-spacing: 1px; color: #333; text-transform: uppercase; }
+  .week-num { font-family: 'Playfair Display', serif; font-size: 28px; line-height: 1; color: #a09a94; font-weight: 700; }
+  .week-num span { font-size: 9px; font-family: 'Outfit', sans-serif; display: block; letter-spacing: 1px; color: #b0aaa4; text-transform: uppercase; font-weight: 400; }
 
-  /* CARD */
-  .day-card { background: var(--surface); border: 1px solid #1c1c1f; border-radius: 9px; padding: 12px 12px 36px 12px; position: relative; overflow: hidden; transition: transform 0.15s, border-color 0.15s; user-select: none; }
-  .day-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 9px 9px 0 0; }
-  .day-card.gym::before { background: var(--gym); }
-  .day-card.upper::before { background: var(--upper); }
+  /* ── CARD ── */
+  .day-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 12px 58px 12px;
+    position: relative; overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    user-select: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .day-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); border-color: #ccc; }
+
+  .day-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; border-radius: 10px 10px 0 0;
+  }
+  .day-card.gym::before    { background: var(--gym); }
+  .day-card.upper::before  { background: var(--upper); }
   .day-card.intervals::before { background: var(--accent); }
-  .day-card.easy::before { background: var(--run); }
-  .day-card.long::before { background: var(--long); }
-  .day-card.race::before { background: var(--accent2); }
+  .day-card.easy::before   { background: var(--run); }
+  .day-card.long::before   { background: var(--long); }
+  .day-card.race::before   { background: var(--race); }
 
-  .day-name { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-  .day-type { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.2; }
-  .day-card.gym .day-type { color: var(--gym); }
-  .day-card.upper .day-type { color: var(--upper); }
+  .day-name { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
+  .day-type { font-size: 12px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; }
+  .day-card.gym .day-type      { color: var(--gym); }
+  .day-card.upper .day-type    { color: var(--upper); }
   .day-card.intervals .day-type { color: var(--accent); }
-  .day-card.easy .day-type { color: var(--run); }
-  .day-card.long .day-type { color: var(--long); }
-  .day-card.race .day-type { color: var(--accent2); }
+  .day-card.easy .day-type     { color: var(--run); }
+  .day-card.long .day-type     { color: var(--long); }
+  .day-card.race .day-type     { color: var(--race); }
 
-  .day-detail { font-size: 11px; color: #777; line-height: 1.55; }
-  .day-detail strong { color: #999; font-weight: 500; }
+  .day-detail { font-size: 11px; color: #aaa9a7; line-height: 1.6; }
+  .day-detail strong { color: #555; font-weight: 500; }
 
-  /* TICK CHIPS — fixed to bottom of card */
-  .card-ticks { position: absolute; bottom: 8px; left: 8px; right: 8px; display: flex; gap: 6px; }
-  .tick-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; border-radius: 6px; transition: all 0.15s; }
+  /* ── TICK CHIPS ── */
+  .card-ticks { position: absolute; bottom: 10px; left: 10px; right: 10px; display: flex; gap: 6px; }
+  .tick-btn {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 7px 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+    cursor: pointer; border-radius: 6px; transition: all 0.15s;
+    font-family: 'Outfit', sans-serif; white-space: nowrap;
+  }
+  .tick-btn.victor { border: 1.5px solid var(--border); background: var(--surface2); color: var(--muted); }
+  .tick-btn.victor:hover:not(.disabled) { border-color: var(--victor); color: var(--victor); background: rgba(217,48,37,0.05); }
+  .tick-btn.victor.ticked { border-color: var(--victor); background: rgba(217,48,37,0.08); color: var(--victor); }
 
-  /* Victor chip */
-  .tick-btn.victor { border: 1.5px solid #2a2a2e; background: #1a1a1d; color: #555; }
-  .tick-btn.victor:hover:not(.disabled) { border-color: var(--victor); color: var(--victor); }
-  .tick-btn.victor.ticked { border-color: var(--victor); background: rgba(255,107,53,0.15); color: var(--victor); }
-  .tick-btn.victor .tick-dot { width: 8px; height: 8px; border-radius: 50%; background: #333; flex-shrink: 0; transition: all 0.15s; }
-  .tick-btn.victor.ticked .tick-dot { background: var(--victor); box-shadow: 0 0 6px rgba(255,107,53,0.7); }
+  .tick-btn.aina { border: 1.5px solid var(--border); background: var(--surface2); color: var(--muted); }
+  .tick-btn.aina:hover:not(.disabled) { border-color: var(--aina); color: var(--aina); background: rgba(124,58,237,0.05); }
+  .tick-btn.aina.ticked { border-color: var(--aina); background: rgba(124,58,237,0.08); color: var(--aina); }
 
-  /* Aina chip */
-  .tick-btn.aina { border: 1.5px solid #2a2a2e; background: #1a1a1d; color: #555; }
-  .tick-btn.aina:hover:not(.disabled) { border-color: var(--aina); color: var(--aina); }
-  .tick-btn.aina.ticked { border-color: var(--aina); background: rgba(167,139,250,0.15); color: var(--aina); }
-  .tick-btn.aina .tick-dot { width: 8px; height: 8px; border-radius: 50%; background: #333; flex-shrink: 0; transition: all 0.15s; }
-  .tick-btn.aina.ticked .tick-dot { background: var(--aina); box-shadow: 0 0 6px rgba(167,139,250,0.7); }
-
-  /* Checkmark when ticked */
-  .tick-btn.ticked::after { content: '✓'; font-size: 12px; }
-
-  /* Disabled */
+  .tick-btn .tick-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: all 0.15s; }
+  .tick-btn.victor.ticked .tick-dot { background: var(--victor); }
+  .tick-btn.aina.ticked .tick-dot { background: var(--aina); }
+  .tick-btn.ticked::after { content: '✓'; font-size: 11px; }
   .tick-btn.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
   .tick-btn.loading-tick { pointer-events: none; opacity: 0.5; }
 
-  /* Both done overlay */
-  .day-card.both-done { opacity: 0.4; border-color: #1c1c1f !important; }
-  .day-card.both-done::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 44px; color: rgba(74,222,128,0.45); font-weight: 900; pointer-events: none; z-index: 2; }
+  /* ── NOTE BUTTON on card ── */
+  .note-btn {
+    position: absolute; top: 10px; right: 10px;
+    width: 24px; height: 24px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--surface2);
+    font-size: 12px; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all 0.15s; z-index: 3; color: var(--muted);
+    line-height: 1;
+  }
+  .note-btn:hover { border-color: var(--accent); background: rgba(217,48,37,0.06); color: var(--accent); }
+  .note-btn.has-notes { border-color: var(--long); color: var(--long); background: rgba(184,106,10,0.07); }
+
+  /* ── NOTES PANEL (overlay) ── */
+  .notes-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.25);
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .notes-overlay.open { opacity: 1; pointer-events: all; }
+  .notes-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; width: 100%; max-width: 420px; max-height: 80vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    transform: translateY(12px); transition: transform 0.2s;
+  }
+  .notes-overlay.open .notes-panel { transform: translateY(0); }
+  .notes-header {
+    padding: 16px 18px 12px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+  }
+  .notes-header-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--text); }
+  .notes-header-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .notes-close {
+    width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border);
+    background: none; cursor: pointer; font-size: 14px; color: var(--muted);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .notes-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  .notes-list {
+    flex: 1; overflow-y: auto; padding: 12px 18px; display: flex;
+    flex-direction: column; gap: 10px;
+  }
+  .notes-empty { font-size: 12px; color: var(--muted); text-align: center; padding: 20px 0; font-style: italic; }
+  .note-item {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 12px;
+  }
+  .note-meta {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+  }
+  .note-author-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .note-author-dot.victor { background: var(--victor); }
+  .note-author-dot.aina { background: var(--aina); }
+  .note-author { font-size: 11px; font-weight: 600; }
+  .note-author.victor { color: var(--victor); }
+  .note-author.aina { color: var(--aina); }
+  .note-date { font-size: 10px; color: var(--muted); margin-left: auto; }
+  .note-text { font-size: 12px; color: var(--text); line-height: 1.55; white-space: pre-wrap; }
+  .note-delete {
+    font-size: 10px; color: #ccc; cursor: pointer; border: none;
+    background: none; padding: 2px 4px; border-radius: 4px; float: right;
+    transition: color 0.15s; margin-left: 6px;
+  }
+  .note-delete:hover { color: var(--accent); }
+
+  .notes-compose {
+    padding: 12px 18px 16px; border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .notes-compose-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .notes-textarea {
+    width: 100%; border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 12px; font-family: 'Outfit', sans-serif; font-size: 12px;
+    color: var(--text); background: var(--bg); resize: none; outline: none;
+    transition: border-color 0.15s; line-height: 1.5;
+  }
+  .notes-textarea:focus { border-color: var(--accent); }
+  .notes-textarea::placeholder { color: #bbb; }
+  .notes-textarea:disabled { opacity: 0.5; cursor: not-allowed; }
+  .notes-save {
+    align-self: flex-end; padding: 7px 20px; border-radius: 8px;
+    background: var(--accent); color: white; border: none; cursor: pointer;
+    font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.5px; transition: opacity 0.15s;
+  }
+  .notes-save:hover { opacity: 0.85; }
+  .notes-save:disabled { opacity: 0.4; cursor: not-allowed; }
+  .notes-login-hint { font-size: 11px; color: var(--muted); text-align: center; font-style: italic; }
+
+  /* ── BOTH DONE ── */
+  .day-card.both-done { opacity: 0.32; border-color: var(--border) !important; box-shadow: none !important; transform: none !important; }
+  .day-card.both-done::after {
+    content: '✓'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%); font-size: 44px;
+    color: rgba(26,107,60,0.4); font-weight: 900; pointer-events: none; z-index: 2;
+  }
   .day-card.both-done .day-type, .day-card.both-done .day-detail, .day-card.both-done .day-name { opacity: 0.4; }
   .day-card.both-done .card-ticks { opacity: 1; pointer-events: all; }
   .day-card.both-done .tick-btn.ticked { opacity: 0.5; }
-  .day-card.both-done .tick-btn.ticked:hover:not(.disabled), .day-card.both-done .tick-btn.ticked:active:not(.disabled) { opacity: 1; }
+  .day-card.both-done .tick-btn.ticked:hover:not(.disabled) { opacity: 1; }
 
-  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; max-width: 1200px; margin: 48px auto 0; }
-  .summary-card { background: var(--surface); border: 1px solid #1e1e22; border-radius: 12px; padding: 20px; text-align: center; }
-  .summary-num { font-family: 'Bebas Neue', sans-serif; font-size: 46px; color: var(--accent); line-height: 1; }
-  .summary-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
-  .footer { text-align: center; margin-top: 48px; font-size: 12px; color: #2a2a2a; letter-spacing: 1px; }
+  /* ── SUMMARY ── */
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; max-width: 1200px; margin: 52px auto 0;
+  }
+  .summary-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px 20px; text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .summary-num { font-family: 'Playfair Display', serif; font-size: 50px; color: var(--accent); line-height: 1; font-weight: 900; }
+  .summary-label { font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-top: 6px; text-transform: uppercase; font-weight: 500; }
 
+  .footer { text-align: center; margin-top: 52px; font-size: 11px; color: #ccc; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  /* ── MOBILE ── */
   @media (max-width: 750px) {
     body { padding: 20px 0; }
     .hero { padding: 0 16px; margin-bottom: 24px; }
@@ -145,23 +338,19 @@
     .legend { padding: 0 16px; gap: 10px; }
     .sync-status { padding: 0 16px; }
     .progress-wrap { margin: 0 16px 24px; padding: 14px 16px; }
-
-    /* Hide desktop grid elements */
     .col-headers { display: none; }
     .block-header { display: none; }
-
-    /* WEEK SLIDER */
     .weeks-container { overflow: hidden; padding: 0; position: relative; }
     .week-slider { display: flex; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
     .week-slide { min-width: 100vw; padding: 0 16px 80px; box-sizing: border-box; }
-
-    /* Slide header */
-    .week-slide-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 10px 14px; background: var(--surface); border-radius: 10px; border: 1px solid #1e1e22; }
-    .week-slide-label { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--muted); line-height: 1; }
-    .week-slide-label span { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 2px; color: #333; display: block; text-transform: uppercase; }
-    .week-slide-block { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-
-    /* Cards vertical stack */
+    .week-slide-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px; padding: 10px 14px;
+      background: var(--surface); border-radius: 10px; border: 1px solid var(--border);
+    }
+    .week-slide-label { font-family: 'Playfair Display', serif; font-size: 28px; color: #ccc; line-height: 1; font-weight: 700; }
+    .week-slide-label span { font-family: 'Outfit', sans-serif; font-size: 9px; letter-spacing: 2px; color: #ccc; display: block; text-transform: uppercase; }
+    .week-slide-block { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 500; }
     .week-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 0; }
     .week-label { display: none; }
     .day-card { padding: 14px 14px 52px; border-radius: 12px; }
@@ -170,14 +359,22 @@
     .day-detail { font-size: 12px; }
     .card-ticks { bottom: 10px; left: 10px; right: 10px; }
     .tick-btn { padding: 8px 10px; font-size: 12px; }
-
-    /* Nav — fixed bottom bar */
-    .week-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex !important; align-items: center; justify-content: center; gap: 20px; padding: 12px 20px 28px; background: rgba(10,10,12,0.95); backdrop-filter: blur(10px); border-top: 1px solid #1e1e22; z-index: 100; }
-    .week-nav-btn { background: var(--surface); border: 1px solid #2a2a2e; color: var(--text); width: 48px; height: 48px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; }
+    .week-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex !important; align-items: center; justify-content: center; gap: 20px;
+      padding: 12px 20px 28px;
+      background: rgba(247,245,242,0.96); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border); z-index: 100;
+    }
+    .week-nav-btn {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      width: 48px; height: 48px; border-radius: 50%; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s, color 0.15s;
+    }
     .week-nav-btn:active { border-color: var(--accent); color: var(--accent); }
     .week-nav-btn:disabled { opacity: 0.25; pointer-events: none; }
-    .week-nav-counter { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--muted); min-width: 80px; text-align: center; letter-spacing: 1px; }
-
+    .week-nav-counter { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--muted); min-width: 80px; text-align: center; }
     .summary-grid { margin: 24px 16px 0; }
     .footer { padding: 0 16px 100px; }
   }
@@ -187,8 +384,15 @@
 
 <div class="hero">
   <div class="hero-label">Plan personalizado · 15 semanas · Barcelona febrero</div>
-  <h1>MEDIA<br><span>MARATÓN</span><br>PLAN</h1>
+  <h1>Media<br><em>Maratón</em><br>Plan</h1>
+  <div class="hero-divider"></div>
   <div class="hero-sub">Objetivo: Sub 1:50h · Ritmo ~5:13/km · 5 días/semana · Progresión gradual</div>
+  <div class="hero-badges">
+    <span class="hero-badge red">Sub 1:50h</span>
+    <span class="hero-badge">15 semanas</span>
+    <span class="hero-badge">5 días/sem</span>
+    <span class="hero-badge">Barcelona 2026</span>
+  </div>
 </div>
 
 <!-- USER BADGE -->
@@ -230,7 +434,7 @@
 <!-- BLOQUE 1 -->
 <div class="block-header">
   <div class="block-tag b1">Bloque 1</div>
-  <div class="block-desc">Semanas 1–3 · Base aeróbica + activación fuerza · Ritmo cómodo 6:00–5:45/km · Volumen moderado</div>
+  <div class="block-info"><div class="block-title">Base aeróbica</div><div class="block-desc">Semanas 1–3 · Activación fuerza · Ritmo cómodo 6:00–5:45/km · Volumen moderado</div></div>
 </div>
 <div class="col-headers">
   <div class="col-header"></div>
@@ -243,35 +447,35 @@
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">01<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c0"><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x12</strong><br>P. muerto rom. <strong>3x12</strong><br>Zancadas <strong>3x12</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x20</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c0" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c0" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c1"><div class="day-name">Martes</div><div class="day-type">⚡ 6x600m</div><div class="day-detail">Ritmo <strong>5:40/km</strong><br>Rec. <strong>2' andando</strong><br>+ 10' calent.<br>+ 5' vuelta calma</div><div class="card-ticks"><button class="tick-btn victor" data-id="c1" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c1" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c2"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>6 km</strong><br>Ritmo <strong>6:10/km</strong><br>Conversacional</div><div class="card-ticks"><button class="tick-btn victor" data-id="c2" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c2" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c3"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x12</strong><br>Remo barra <strong>3x12</strong><br>Press militar <strong>3x12</strong><br>Jalón polea <strong>3x12</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c3" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c3" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c4"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>6:00/km</strong><br>Constante</div><div class="card-ticks"><button class="tick-btn victor" data-id="c4" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c4" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c0"><button class="note-btn" onclick="openNotes(event,'c0')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x12</strong><br>P. muerto rom. <strong>3x12</strong><br>Zancadas <strong>3x12</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x20</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c0" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c0" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c1"><button class="note-btn" onclick="openNotes(event,'c1')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 6x600m</div><div class="day-detail">Ritmo <strong>5:40/km</strong><br>Rec. <strong>2' andando</strong><br>+ 10' calent.<br>+ 5' vuelta calma</div><div class="card-ticks"><button class="tick-btn victor" data-id="c1" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c1" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c2"><button class="note-btn" onclick="openNotes(event,'c2')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>6 km</strong><br>Ritmo <strong>6:10/km</strong><br>Conversacional</div><div class="card-ticks"><button class="tick-btn victor" data-id="c2" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c2" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c3"><button class="note-btn" onclick="openNotes(event,'c3')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x12</strong><br>Remo barra <strong>3x12</strong><br>Press militar <strong>3x12</strong><br>Jalón polea <strong>3x12</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c3" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c3" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c4"><button class="note-btn" onclick="openNotes(event,'c4')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>6:00/km</strong><br>Constante</div><div class="card-ticks"><button class="tick-btn victor" data-id="c4" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c4" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">02<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c5"><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x12</strong><br>P. muerto rom. <strong>3x12</strong><br>Zancadas <strong>3x12</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x20</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c5" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c5" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c6"><div class="day-name">Martes</div><div class="day-type">⚡ 6x800m</div><div class="day-detail">Ritmo <strong>5:35/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c6" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c6" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c7"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>7 km</strong><br>Ritmo <strong>6:05/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c7" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c7" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c8"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x12</strong><br>Remo barra <strong>3x12</strong><br>Press militar <strong>3x12</strong><br>Jalón polea <strong>3x12</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c8" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c8" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c9"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:55/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c9" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c9" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c5"><button class="note-btn" onclick="openNotes(event,'c5')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x12</strong><br>P. muerto rom. <strong>3x12</strong><br>Zancadas <strong>3x12</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x20</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c5" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c5" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c6"><button class="note-btn" onclick="openNotes(event,'c6')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 6x800m</div><div class="day-detail">Ritmo <strong>5:35/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c6" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c6" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c7"><button class="note-btn" onclick="openNotes(event,'c7')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>7 km</strong><br>Ritmo <strong>6:05/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c7" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c7" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c8"><button class="note-btn" onclick="openNotes(event,'c8')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x12</strong><br>Remo barra <strong>3x12</strong><br>Press militar <strong>3x12</strong><br>Jalón polea <strong>3x12</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c8" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c8" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c9"><button class="note-btn" onclick="openNotes(event,'c9')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:55/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c9" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c9" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">03<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c10"><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x15</strong><br>P. muerto rom. <strong>3x15</strong><br>Zancadas <strong>3x15</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x15</strong><br>Gemelos <strong>3x25</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c10" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c10" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c11"><div class="day-name">Martes</div><div class="day-type">⚡ 8x600m</div><div class="day-detail">Ritmo <strong>5:30/km</strong><br>Rec. <strong>90" andando</strong><br><strong>🧪 Test 5km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c11" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c11" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c12"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>7 km</strong><br>Ritmo <strong>6:00/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c12" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c12" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c13"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x10</strong><br>Remo barra <strong>4x10</strong><br>Press militar <strong>3x10</strong><br>Jalón polea <strong>4x10</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c13" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c13" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c14"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>11 km</strong><br>Ritmo <strong>5:50/km</strong><br><strong>🧪 Test 5km a tope</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c14" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c14" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c10"><button class="note-btn" onclick="openNotes(event,'c10')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Piernas Base</div><div class="day-detail">Sent. búlgara <strong>3x15</strong><br>P. muerto rom. <strong>3x15</strong><br>Zancadas <strong>3x15</strong><br>Pull-through <strong>3x15</strong><br>Pallof press <strong>3x15</strong><br>Gemelos <strong>3x25</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c10" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c10" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c11"><button class="note-btn" onclick="openNotes(event,'c11')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 8x600m</div><div class="day-detail">Ritmo <strong>5:30/km</strong><br>Rec. <strong>90" andando</strong><br><strong>🧪 Test 5km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c11" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c11" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c12"><button class="note-btn" onclick="openNotes(event,'c12')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>7 km</strong><br>Ritmo <strong>6:00/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c12" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c12" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c13"><button class="note-btn" onclick="openNotes(event,'c13')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x10</strong><br>Remo barra <strong>4x10</strong><br>Press militar <strong>3x10</strong><br>Jalón polea <strong>4x10</strong><br>Curl bíceps <strong>3x12</strong><br>Tríceps polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c13" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c13" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c14"><button class="note-btn" onclick="openNotes(event,'c14')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>11 km</strong><br>Ritmo <strong>5:50/km</strong><br><strong>🧪 Test 5km a tope</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c14" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c14" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <!-- BLOQUE 2 -->
 <div class="block-header">
   <div class="block-tag b2">Bloque 2</div>
-  <div class="block-desc">Semanas 4–7 · Construcción de volumen + fuerza máxima · Ritmo 5:45–5:25/km · Tiradas hasta 15km</div>
+  <div class="block-info"><div class="block-title">Construcción de volumen</div><div class="block-desc">Semanas 4–7 · Fuerza máxima · Ritmo 5:45–5:25/km · Tiradas hasta 15km</div></div>
 </div>
 <div class="col-headers">
   <div class="col-header"></div>
@@ -284,44 +488,44 @@
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">04<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c15"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x8</strong><br>P. muerto barra <strong>4x8</strong><br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x8</strong><br>Face pull polea <strong>3x15</strong><br>Crunch polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c15" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c15" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c16"><div class="day-name">Martes</div><div class="day-type">⚡ 5x1km</div><div class="day-detail">Ritmo <strong>5:25/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c16" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c16" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c17"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:55/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c17" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c17" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c18"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x8</strong><br>Remo barra <strong>4x8</strong><br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Plank <strong>3x50"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c18" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c18" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c19"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>12 km</strong><br>Ritmo <strong>5:45/km</strong><br>Últimos 2km <strong>5:25</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c19" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c19" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c15"><button class="note-btn" onclick="openNotes(event,'c15')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x8</strong><br>P. muerto barra <strong>4x8</strong><br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x8</strong><br>Face pull polea <strong>3x15</strong><br>Crunch polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c15" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c15" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c16"><button class="note-btn" onclick="openNotes(event,'c16')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 5x1km</div><div class="day-detail">Ritmo <strong>5:25/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c16" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c16" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c17"><button class="note-btn" onclick="openNotes(event,'c17')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:55/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c17" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c17" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c18"><button class="note-btn" onclick="openNotes(event,'c18')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x8</strong><br>Remo barra <strong>4x8</strong><br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Plank <strong>3x50"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c18" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c18" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c19"><button class="note-btn" onclick="openNotes(event,'c19')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>12 km</strong><br>Ritmo <strong>5:45/km</strong><br>Últimos 2km <strong>5:25</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c19" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c19" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">05<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c20"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x8</strong> ↑<br>P. muerto barra <strong>4x8</strong> ↑<br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x8</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c20" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c20" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c21"><div class="day-name">Martes</div><div class="day-type">⚡ 6x1km</div><div class="day-detail">Ritmo <strong>5:22/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c21" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c21" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c22"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c22" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c22" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c23"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x8</strong> ↑<br>Remo barra <strong>4x8</strong> ↑<br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Dead bug <strong>3x10</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c23" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c23" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c24"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>13 km</strong><br>Ritmo <strong>5:42/km</strong><br>Últimos 2km <strong>5:20</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c24" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c24" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c20"><button class="note-btn" onclick="openNotes(event,'c20')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x8</strong> ↑<br>P. muerto barra <strong>4x8</strong> ↑<br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x8</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c20" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c20" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c21"><button class="note-btn" onclick="openNotes(event,'c21')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 6x1km</div><div class="day-detail">Ritmo <strong>5:22/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c21" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c21" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c22"><button class="note-btn" onclick="openNotes(event,'c22')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c22" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c22" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c23"><button class="note-btn" onclick="openNotes(event,'c23')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x8</strong> ↑<br>Remo barra <strong>4x8</strong> ↑<br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Dead bug <strong>3x10</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c23" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c23" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c24"><button class="note-btn" onclick="openNotes(event,'c24')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>13 km</strong><br>Ritmo <strong>5:42/km</strong><br>Últimos 2km <strong>5:20</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c24" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c24" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">06<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c25"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x6</strong> ↑<br>P. muerto barra <strong>4x6</strong> ↑<br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x6</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x15</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c25" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c25" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c26"><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 8km</div><div class="day-detail"><strong>8 km continuos</strong><br>Ritmo <strong>5:30/km</strong><br>Ritmo umbral</div><div class="card-ticks"><button class="tick-btn victor" data-id="c26" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c26" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c27"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:50/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c27" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c27" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c28"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x8</strong><br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Rotación polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c28" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c28" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c29"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>14 km</strong><br>Ritmo <strong>5:40/km</strong><br>Últimos 3km <strong>5:18</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c29" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c29" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c25"><button class="note-btn" onclick="openNotes(event,'c25')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x6</strong> ↑<br>P. muerto barra <strong>4x6</strong> ↑<br>Step-up <strong>4x8</strong><br>Hip thrust barra <strong>4x6</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x15</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c25" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c25" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c26"><button class="note-btn" onclick="openNotes(event,'c26')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 8km</div><div class="day-detail"><strong>8 km continuos</strong><br>Ritmo <strong>5:30/km</strong><br>Ritmo umbral</div><div class="card-ticks"><button class="tick-btn victor" data-id="c26" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c26" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c27"><button class="note-btn" onclick="openNotes(event,'c27')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:50/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c27" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c27" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c28"><button class="note-btn" onclick="openNotes(event,'c28')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x8</strong><br>Press militar <strong>4x8</strong><br>Jalón polea <strong>4x8</strong><br>Face pull <strong>3x15</strong><br>Rotación polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c28" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c28" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c29"><button class="note-btn" onclick="openNotes(event,'c29')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>14 km</strong><br>Ritmo <strong>5:40/km</strong><br>Últimos 3km <strong>5:18</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c29" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c29" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">07<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c30"><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x6</strong> ↑<br>P. muerto barra <strong>4x6</strong> ↑<br>Step-up <strong>4x6</strong><br>Hip thrust barra <strong>4x6</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x15</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c30" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c30" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c31"><div class="day-name">Martes</div><div class="day-type">⚡ 4x2km</div><div class="day-detail">Ritmo <strong>5:20/km</strong><br>Rec. <strong>2'30" andando</strong><br><strong>🧪 Test 10km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c31" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c31" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c32"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:45/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c32" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c32" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c33"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong> ↑<br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Plank din. <strong>3x45"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c33" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c33" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c34"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>15 km</strong><br>Ritmo <strong>5:38/km</strong><br><strong>🧪 Test 10km a tope</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c34" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c34" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c30"><button class="note-btn" onclick="openNotes(event,'c30')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Fuerza Máxima</div><div class="day-detail">Sent. búlgara <strong>4x6</strong> ↑<br>P. muerto barra <strong>4x6</strong> ↑<br>Step-up <strong>4x6</strong><br>Hip thrust barra <strong>4x6</strong> ↑<br>Face pull <strong>3x15</strong><br>Crunch polea <strong>3x15</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c30" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c30" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c31"><button class="note-btn" onclick="openNotes(event,'c31')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 4x2km</div><div class="day-detail">Ritmo <strong>5:20/km</strong><br>Rec. <strong>2'30" andando</strong><br><strong>🧪 Test 10km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c31" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c31" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c32"><button class="note-btn" onclick="openNotes(event,'c32')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:45/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c32" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c32" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c33"><button class="note-btn" onclick="openNotes(event,'c33')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong> ↑<br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Plank din. <strong>3x45"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c33" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c33" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c34"><button class="note-btn" onclick="openNotes(event,'c34')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>15 km</strong><br>Ritmo <strong>5:38/km</strong><br><strong>🧪 Test 10km a tope</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c34" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c34" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <!-- BLOQUE 3 -->
 <div class="block-header">
   <div class="block-tag b3">Bloque 3</div>
-  <div class="block-desc">Semanas 8–12 · Velocidad específica + potencia · Ritmo objetivo 5:13/km · Tiradas hasta 18km</div>
+  <div class="block-info"><div class="block-title">Velocidad específica</div><div class="block-desc">Semanas 8–12 · Potencia · Ritmo objetivo 5:13/km · Tiradas hasta 18km</div></div>
 </div>
 <div class="col-headers">
   <div class="col-header"></div>
@@ -334,53 +538,53 @@
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">08<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c35"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c35" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c35" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c36"><div class="day-name">Martes</div><div class="day-type">⚡ 6x1km</div><div class="day-detail">Ritmo <strong>5:18/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c36" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c36" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c37"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:45/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c37" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c37" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c38"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong><br>Remo barra <strong>4x6</strong><br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Core: plank <strong>3x55"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c38" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c38" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c39"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>15 km</strong><br>Ritmo <strong>5:35/km</strong><br>Últimos 3km <strong>5:15</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c39" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c39" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c35"><button class="note-btn" onclick="openNotes(event,'c35')">📝</button><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c35" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c35" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c36"><button class="note-btn" onclick="openNotes(event,'c36')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 6x1km</div><div class="day-detail">Ritmo <strong>5:18/km</strong><br>Rec. <strong>2' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c36" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c36" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c37"><button class="note-btn" onclick="openNotes(event,'c37')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>9 km</strong><br>Ritmo <strong>5:45/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c37" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c37" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c38"><button class="note-btn" onclick="openNotes(event,'c38')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong><br>Remo barra <strong>4x6</strong><br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Core: plank <strong>3x55"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c38" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c38" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c39"><button class="note-btn" onclick="openNotes(event,'c39')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>15 km</strong><br>Ritmo <strong>5:35/km</strong><br>Últimos 3km <strong>5:15</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c39" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c39" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">09<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c40"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c40" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c40" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c41"><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 10km</div><div class="day-detail"><strong>10 km continuos</strong><br>Ritmo <strong>5:25/km</strong><br>Umbral aeróbico</div><div class="card-ticks"><button class="tick-btn victor" data-id="c41" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c41" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c42"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:45/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c42" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c42" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c43"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong><br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Dead bug <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c43" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c43" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c44"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>16 km</strong><br>Ritmo <strong>5:32/km</strong><br>Últimos 3km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c44" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c44" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c40"><button class="note-btn" onclick="openNotes(event,'c40')">📝</button><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c40" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c40" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c41"><button class="note-btn" onclick="openNotes(event,'c41')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 10km</div><div class="day-detail"><strong>10 km continuos</strong><br>Ritmo <strong>5:25/km</strong><br>Umbral aeróbico</div><div class="card-ticks"><button class="tick-btn victor" data-id="c41" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c41" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c42"><button class="note-btn" onclick="openNotes(event,'c42')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:45/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c42" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c42" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c43"><button class="note-btn" onclick="openNotes(event,'c43')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong><br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Dead bug <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c43" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c43" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c44"><button class="note-btn" onclick="openNotes(event,'c44')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>16 km</strong><br>Ritmo <strong>5:32/km</strong><br>Últimos 3km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c44" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c44" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">10<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c45"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c45" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c45" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c46"><div class="day-name">Martes</div><div class="day-type">⚡ 3x3km</div><div class="day-detail">Ritmo <strong>5:15/km</strong><br>Rec. <strong>3' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c46" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c46" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c47"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:40/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c47" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c47" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c48"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong> ↑<br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Rotación polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c48" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c48" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c49"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>17 km</strong><br>Ritmo <strong>5:30/km</strong><br>Últimos 4km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c49" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c49" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c45"><button class="note-btn" onclick="openNotes(event,'c45')">📝</button><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c45" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c45" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c46"><button class="note-btn" onclick="openNotes(event,'c46')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 3x3km</div><div class="day-detail">Ritmo <strong>5:15/km</strong><br>Rec. <strong>3' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c46" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c46" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c47"><button class="note-btn" onclick="openNotes(event,'c47')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:40/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c47" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c47" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c48"><button class="note-btn" onclick="openNotes(event,'c48')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>4x6</strong> ↑<br>Remo barra <strong>4x6</strong> ↑<br>Press militar <strong>4x6</strong><br>Jalón polea <strong>4x6</strong><br>Face pull <strong>3x15</strong><br>Rotación polea <strong>3x12</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c48" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c48" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c49"><button class="note-btn" onclick="openNotes(event,'c49')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>17 km</strong><br>Ritmo <strong>5:30/km</strong><br>Últimos 4km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c49" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c49" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">11<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c50"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c50" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c50" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c51"><div class="day-name">Martes</div><div class="day-type">⚡ 4x3km</div><div class="day-detail">Ritmo <strong>5:13/km</strong><br>Rec. <strong>3' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c51" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c51" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c52"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:40/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c52" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c52" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c53"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>Core: plank din. <strong>3x50"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c53" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c53" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c54"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>18 km</strong><br>Ritmo <strong>5:28/km</strong><br>Últimos 5km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c54" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c54" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c50"><button class="note-btn" onclick="openNotes(event,'c50')">📝</button><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>4x8</strong><br>Step-up explos. <strong>4x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>4x8</strong><br>Rotación polea <strong>3x12</strong><br>Skipping <strong>4x20"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c50" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c50" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c51"><button class="note-btn" onclick="openNotes(event,'c51')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 4x3km</div><div class="day-detail">Ritmo <strong>5:13/km</strong><br>Rec. <strong>3' andando</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c51" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c51" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c52"><button class="note-btn" onclick="openNotes(event,'c52')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>10 km</strong><br>Ritmo <strong>5:40/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c52" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c52" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c53"><button class="note-btn" onclick="openNotes(event,'c53')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>Core: plank din. <strong>3x50"</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c53" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c53" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c54"><button class="note-btn" onclick="openNotes(event,'c54')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>18 km</strong><br>Ritmo <strong>5:28/km</strong><br>Últimos 5km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c54" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c54" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">12<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c55"><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>3x8</strong><br>Step-up explos. <strong>3x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>3x8</strong><br>Rotación polea <strong>3x12</strong><br>↓ Semana recuperación</div><div class="card-ticks"><button class="tick-btn victor" data-id="c55" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c55" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c56"><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 8km</div><div class="day-detail"><strong>8 km continuos</strong><br>Ritmo <strong>5:20/km</strong><br>Semana descarga<br><strong>🧪 Test 10km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c56" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c56" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c57"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong><br>Recuperación activa</div><div class="card-ticks"><button class="tick-btn victor" data-id="c57" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c57" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c58"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>Sesión ligera</div><div class="card-ticks"><button class="tick-btn victor" data-id="c58" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c58" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c59"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>14 km</strong><br>Ritmo <strong>5:35/km</strong><br><strong>🧪 Test 10km a tope</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c59" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c59" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c55"><button class="note-btn" onclick="openNotes(event,'c55')">📝</button><div class="day-name">Lunes</div><div class="day-type">🔥 Potencia</div><div class="day-detail">Sent. con salto <strong>3x8</strong><br>Step-up explos. <strong>3x6</strong><br>PD rum. 1p. <strong>3x10</strong><br>Hip thrust explos. <strong>3x8</strong><br>Rotación polea <strong>3x12</strong><br>↓ Semana recuperación</div><div class="card-ticks"><button class="tick-btn victor" data-id="c55" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c55" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c56"><button class="note-btn" onclick="openNotes(event,'c56')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ Tempo 8km</div><div class="day-detail"><strong>8 km continuos</strong><br>Ritmo <strong>5:20/km</strong><br>Semana descarga<br><strong>🧪 Test 10km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c56" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c56" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c57"><button class="note-btn" onclick="openNotes(event,'c57')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong><br>Recuperación activa</div><div class="card-ticks"><button class="tick-btn victor" data-id="c57" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c57" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c58"><button class="note-btn" onclick="openNotes(event,'c58')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>Sesión ligera</div><div class="card-ticks"><button class="tick-btn victor" data-id="c58" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c58" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c59"><button class="note-btn" onclick="openNotes(event,'c59')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>14 km</strong><br>Ritmo <strong>5:35/km</strong><br><strong>🧪 Test 10km a tope</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c59" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c59" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <!-- BLOQUE 4 -->
 <div class="block-header">
   <div class="block-tag b4">Bloque 4</div>
-  <div class="block-desc">Semanas 13–15 · Simulacros + tapering · Reducir volumen, mantener intensidad · Llegar fresco a Barcelona</div>
+  <div class="block-info"><div class="block-title">Simulacros + Tapering</div><div class="block-desc">Semanas 13–15 · Reducir volumen, mantener intensidad · Llegar fresco a Barcelona</div></div>
 </div>
 <div class="col-headers">
   <div class="col-header"></div>
@@ -393,38 +597,57 @@
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">13<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c60"><div class="day-name">Lunes</div><div class="day-type">💪 Mantenimiento</div><div class="day-detail">Sent. búlgara <strong>3x8</strong><br>P. muerto rom. <strong>3x8</strong><br>Hip thrust <strong>3x8</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x15</strong><br>↓ Volumen</div><div class="card-ticks"><button class="tick-btn victor" data-id="c60" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c60" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c61"><div class="day-name">Martes</div><div class="day-type">⚡ Simulacro 15km</div><div class="day-detail"><strong>15 km</strong> continuos<br>Ritmo <strong>5:13/km</strong><br>Simula la carrera</div><div class="card-ticks"><button class="tick-btn victor" data-id="c61" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c61" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c62"><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c62" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c62" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c63"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>↓ Volumen semana</div><div class="card-ticks"><button class="tick-btn victor" data-id="c63" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c63" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c64"><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>16 km</strong><br>Ritmo <strong>5:25/km</strong><br>Últimos 5km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c64" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c64" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c60"><button class="note-btn" onclick="openNotes(event,'c60')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Mantenimiento</div><div class="day-detail">Sent. búlgara <strong>3x8</strong><br>P. muerto rom. <strong>3x8</strong><br>Hip thrust <strong>3x8</strong><br>Pallof press <strong>3x12</strong><br>Gemelos <strong>3x15</strong><br>↓ Volumen</div><div class="card-ticks"><button class="tick-btn victor" data-id="c60" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c60" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c61"><button class="note-btn" onclick="openNotes(event,'c61')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ Simulacro 15km</div><div class="day-detail"><strong>15 km</strong> continuos<br>Ritmo <strong>5:13/km</strong><br>Simula la carrera</div><div class="card-ticks"><button class="tick-btn victor" data-id="c61" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c61" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c62"><button class="note-btn" onclick="openNotes(event,'c62')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Rodaje suave</div><div class="day-detail"><strong>8 km</strong><br>Ritmo <strong>5:50/km</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c62" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c62" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c63"><button class="note-btn" onclick="openNotes(event,'c63')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tren Superior</div><div class="day-detail">Press banca <strong>3x8</strong><br>Remo barra <strong>3x8</strong><br>Press militar <strong>3x8</strong><br>Jalón polea <strong>3x8</strong><br>Face pull <strong>3x15</strong><br>↓ Volumen semana</div><div class="card-ticks"><button class="tick-btn victor" data-id="c63" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c63" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c64"><button class="note-btn" onclick="openNotes(event,'c64')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Tirada larga</div><div class="day-detail"><strong>16 km</strong><br>Ritmo <strong>5:25/km</strong><br>Últimos 5km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c64" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c64" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">14<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c65"><div class="day-name">Lunes</div><div class="day-type">💪 Tapering</div><div class="day-detail">Sent. búlgara <strong>2x8</strong><br>P. muerto rom. <strong>2x8</strong><br>Hip thrust <strong>2x8</strong><br>Pallof press <strong>2x12</strong><br>Gemelos <strong>2x15</strong><br>Solo activación</div><div class="card-ticks"><button class="tick-btn victor" data-id="c65" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c65" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c66"><div class="day-name">Martes</div><div class="day-type">⚡ 4x1km</div><div class="day-detail">Ritmo <strong>5:05/km</strong><br>Rec. <strong>2' andando</strong><br>Piernas frescas</div><div class="card-ticks"><button class="tick-btn victor" data-id="c66" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c66" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c67"><div class="day-name">Jueves</div><div class="day-type">🏃 Trote suave</div><div class="day-detail"><strong>6 km</strong><br>Ritmo <strong>6:00/km</strong><br>Muy suave</div><div class="card-ticks"><button class="tick-btn victor" data-id="c67" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c67" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c68"><div class="day-name">Sábado</div><div class="day-type">🏋️ Tapering</div><div class="day-detail">Press banca <strong>2x8</strong><br>Remo barra <strong>2x8</strong><br>Press militar <strong>2x8</strong><br>Jalón polea <strong>2x8</strong><br>Face pull <strong>2x15</strong><br>Sesión muy ligera</div><div class="card-ticks"><button class="tick-btn victor" data-id="c68" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c68" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card long" data-id="c69"><div class="day-name">Domingo</div><div class="day-type">📏 Última larga</div><div class="day-detail"><strong>12 km</strong><br>Ritmo <strong>5:25/km</strong><br>Últimos 3km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c69" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c69" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c65"><button class="note-btn" onclick="openNotes(event,'c65')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Tapering</div><div class="day-detail">Sent. búlgara <strong>2x8</strong><br>P. muerto rom. <strong>2x8</strong><br>Hip thrust <strong>2x8</strong><br>Pallof press <strong>2x12</strong><br>Gemelos <strong>2x15</strong><br>Solo activación</div><div class="card-ticks"><button class="tick-btn victor" data-id="c65" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c65" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c66"><button class="note-btn" onclick="openNotes(event,'c66')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 4x1km</div><div class="day-detail">Ritmo <strong>5:05/km</strong><br>Rec. <strong>2' andando</strong><br>Piernas frescas</div><div class="card-ticks"><button class="tick-btn victor" data-id="c66" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c66" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c67"><button class="note-btn" onclick="openNotes(event,'c67')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Trote suave</div><div class="day-detail"><strong>6 km</strong><br>Ritmo <strong>6:00/km</strong><br>Muy suave</div><div class="card-ticks"><button class="tick-btn victor" data-id="c67" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c67" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c68"><button class="note-btn" onclick="openNotes(event,'c68')">📝</button><div class="day-name">Sábado</div><div class="day-type">🏋️ Tapering</div><div class="day-detail">Press banca <strong>2x8</strong><br>Remo barra <strong>2x8</strong><br>Press militar <strong>2x8</strong><br>Jalón polea <strong>2x8</strong><br>Face pull <strong>2x15</strong><br>Sesión muy ligera</div><div class="card-ticks"><button class="tick-btn victor" data-id="c68" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c68" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card long" data-id="c69"><button class="note-btn" onclick="openNotes(event,'c69')">📝</button><div class="day-name">Domingo</div><div class="day-type">📏 Última larga</div><div class="day-detail"><strong>12 km</strong><br>Ritmo <strong>5:25/km</strong><br>Últimos 3km <strong>5:13</strong></div><div class="card-ticks"><button class="tick-btn victor" data-id="c69" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c69" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 <div class="week-row">
   <div class="week-label"><div class="week-num">15<span>sem</span></div></div>
-  <div class="day-card gym" data-id="c70"><div class="day-name">Lunes</div><div class="day-type">💪 Activación</div><div class="day-detail">Sentadilla <strong>2x10</strong> ligero<br>Hip thrust <strong>2x10</strong><br>Gemelos <strong>2x15</strong><br>Plank <strong>2x30"</strong><br>Solo activar<br>Sin fatiga</div><div class="card-ticks"><button class="tick-btn victor" data-id="c70" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c70" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card intervals" data-id="c71"><div class="day-name">Martes</div><div class="day-type">⚡ 3x1km</div><div class="day-detail">Ritmo <strong>5:10/km</strong><br>Rec. <strong>2' andando</strong><br>Última sesión dura</div><div class="card-ticks"><button class="tick-btn victor" data-id="c71" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c71" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card easy" data-id="c72"><div class="day-name">Jueves</div><div class="day-type">🏃 Trote suave</div><div class="day-detail"><strong>4 km</strong><br>Ritmo <strong>6:30/km</strong><br>Muy suave, estirar</div><div class="card-ticks"><button class="tick-btn victor" data-id="c72" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c72" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card upper" data-id="c73"><div class="day-name">Sábado</div><div class="day-type">😴 Descanso</div><div class="day-detail">Descanso total<br>Hidratación<br>Prepara el dorsal<br>Duerme bien 🙌</div><div class="card-ticks"><button class="tick-btn victor" data-id="c73" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c73" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
-  <div class="day-card race" data-id="c74"><div class="day-name">Domingo</div><div class="day-type">🏁 BARCELONA</div><div class="day-detail"><strong>21,1 km</strong><br>Objetivo: <strong>&lt; 1:50h</strong><br>Ritmo: <strong>5:13/km</strong><br>🔥 A por ello</div><div class="card-ticks"><button class="tick-btn victor" data-id="c74" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c74" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card gym" data-id="c70"><button class="note-btn" onclick="openNotes(event,'c70')">📝</button><div class="day-name">Lunes</div><div class="day-type">💪 Activación</div><div class="day-detail">Sentadilla <strong>2x10</strong> ligero<br>Hip thrust <strong>2x10</strong><br>Gemelos <strong>2x15</strong><br>Plank <strong>2x30"</strong><br>Solo activar<br>Sin fatiga</div><div class="card-ticks"><button class="tick-btn victor" data-id="c70" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c70" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card intervals" data-id="c71"><button class="note-btn" onclick="openNotes(event,'c71')">📝</button><div class="day-name">Martes</div><div class="day-type">⚡ 3x1km</div><div class="day-detail">Ritmo <strong>5:10/km</strong><br>Rec. <strong>2' andando</strong><br>Última sesión dura</div><div class="card-ticks"><button class="tick-btn victor" data-id="c71" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c71" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card easy" data-id="c72"><button class="note-btn" onclick="openNotes(event,'c72')">📝</button><div class="day-name">Jueves</div><div class="day-type">🏃 Trote suave</div><div class="day-detail"><strong>4 km</strong><br>Ritmo <strong>6:30/km</strong><br>Muy suave, estirar</div><div class="card-ticks"><button class="tick-btn victor" data-id="c72" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c72" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card upper" data-id="c73"><button class="note-btn" onclick="openNotes(event,'c73')">📝</button><div class="day-name">Sábado</div><div class="day-type">😴 Descanso</div><div class="day-detail">Descanso total<br>Hidratación<br>Prepara el dorsal<br>Duerme bien 🙌</div><div class="card-ticks"><button class="tick-btn victor" data-id="c73" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c73" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
+  <div class="day-card race" data-id="c74"><button class="note-btn" onclick="openNotes(event,'c74')">📝</button><div class="day-name">Domingo</div><div class="day-type">🏁 BARCELONA</div><div class="day-detail"><strong>21,1 km</strong><br>Objetivo: <strong>&lt; 1:50h</strong><br>Ritmo: <strong>5:13/km</strong><br>🔥 A por ello</div><div class="card-ticks"><button class="tick-btn victor" data-id="c74" data-user="victor"><div class="tick-dot"></div>Victor</button><button class="tick-btn aina" data-id="c74" data-user="aina"><div class="tick-dot"></div>Aina</button></div></div>
 </div>
 
 </div><!-- end weeks-container -->
+
+<!-- NOTES OVERLAY -->
+<div class="notes-overlay" id="notesOverlay" onclick="closeNotes(event)">
+  <div class="notes-panel">
+    <div class="notes-header">
+      <div>
+        <div class="notes-header-title" id="notesPanelTitle">Notas</div>
+        <div class="notes-header-sub" id="notesPanelSub"></div>
+      </div>
+      <button class="notes-close" onclick="closeNotesPanel()">✕</button>
+    </div>
+    <div class="notes-list" id="notesList"></div>
+    <div class="notes-compose" id="notesCompose">
+      <div class="notes-compose-label" id="notesComposeLabel">Añadir nota</div>
+      <textarea class="notes-textarea" id="notesTextarea" rows="3" placeholder="Ej: Sentadilla búlgara 20kg, hip thrust 40kg..."></textarea>
+      <button class="notes-save" id="notesSaveBtn" onclick="saveNote()">Guardar</button>
+    </div>
+  </div>
+</div>
 
 <div class="summary-grid">
   <div class="summary-card"><div class="summary-num">15</div><div class="summary-label">Semanas de plan</div></div>
   <div class="summary-card"><div class="summary-num">75</div><div class="summary-label">Sesiones totales</div></div>
   <div class="summary-card"><div class="summary-num">18</div><div class="summary-label">km tirada máxima</div></div>
-  <div class="summary-card"><div class="summary-num" style="font-size:28px">Sub 1:50</div><div class="summary-label">Objetivo Barcelona</div></div>
+  <div class="summary-card"><div class="summary-num" style="font-size:32px;line-height:1.1">Sub<br>1:50</div><div class="summary-label">Objetivo Barcelona</div></div>
 </div>
 
 <div class="footer">Plan diseñado por Claude · Media Maratón Barcelona · gbfoods 2026</div>
@@ -442,21 +665,15 @@
 
   const TOTAL = 75;
   const USERS = ['victor', 'aina'];
-
-  // Detect current user from URL param
   const rawUser = window.location.hash.replace('#', '').toLowerCase();
   const currentUser = USERS.includes(rawUser) ? rawUser : null;
-
-  // State: Set per user
   const doneByUser = { victor: new Set(), aina: new Set() };
 
-  // --- UI SETUP ---
   function setupUserBadge() {
     const dot = document.getElementById('userDot');
     const label = document.getElementById('userNameLabel');
     const ro = document.getElementById('readonlyLabel');
     const resetBtn = document.getElementById('resetBtn');
-
     if (currentUser) {
       dot.classList.add(currentUser);
       label.textContent = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
@@ -464,7 +681,7 @@
       ro.style.display = 'none';
       resetBtn.style.display = 'block';
     } else {
-      dot.style.background = '#555';
+      dot.style.background = '#ccc';
       label.textContent = 'Espectador (solo lectura)';
       ro.style.display = 'inline-block';
       resetBtn.style.display = 'none';
@@ -491,16 +708,10 @@
       const id = card.dataset.id;
       const vDone = doneByUser.victor.has(id);
       const aDone = doneByUser.aina.has(id);
-
-      // both-done overlay
       card.classList.toggle('both-done', vDone && aDone);
-
-      // tick buttons state
       card.querySelectorAll('.tick-btn').forEach(btn => {
         const u = btn.dataset.user;
         btn.classList.toggle('ticked', doneByUser[u].has(id));
-
-        // disable if not current user (or no user)
         if (!currentUser || u !== currentUser) {
           btn.classList.add('disabled');
         } else {
@@ -510,15 +721,12 @@
     });
   }
 
-  // --- DATA ---
   async function loadProgress() {
     try {
       const res = await fetch(`${API}?select=card_id,user_id&done=eq.true`, { headers: HEADERS });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      data.forEach(row => {
-        if (doneByUser[row.user_id]) doneByUser[row.user_id].add(row.card_id);
-      });
+      data.forEach(row => { if (doneByUser[row.user_id]) doneByUser[row.user_id].add(row.card_id); });
       updateProgress();
       refreshCardVisuals();
       setStatus('✓ Progreso sincronizado', 'ok');
@@ -530,10 +738,8 @@
 
   async function toggleTick(cardId, user) {
     if (!currentUser || user !== currentUser) return;
-
     const btn = document.querySelector(`.tick-btn.${user}[data-id="${cardId}"]`);
     btn.classList.add('loading-tick');
-
     try {
       if (doneByUser[user].has(cardId)) {
         const res = await fetch(`${API}?card_id=eq.${cardId}&user_id=eq.${user}`, { method: 'DELETE', headers: HEADERS });
@@ -574,7 +780,6 @@
     }
   }
 
-  // --- EVENTS ---
   document.querySelectorAll('.tick-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -582,9 +787,9 @@
     });
   });
 
-  // Init
   setupUserBadge();
   loadProgress();
+  loadAllNotes();
 
   // ---- MOBILE WEEK SLIDER ----
   let currentSlide = 0;
@@ -594,12 +799,9 @@
   function initMobileSlider() {
     if (window.innerWidth > 750 || sliderInited) return;
     sliderInited = true;
-
     const container = document.querySelector('.weeks-container');
     const weekRows = Array.from(document.querySelectorAll('.week-row'));
     totalSlides = weekRows.length;
-
-    // Map block name per week
     const blockNames = [];
     let currentBlock = 'Bloque 1';
     Array.from(container.children).forEach(el => {
@@ -609,19 +811,13 @@
         blockNames.push(currentBlock);
       }
     });
-
-    // Week numbers
     const weekLabels = weekRows.map((row, i) => String(i + 1).padStart(2, '0'));
-
-    // Build slider
     const slider = document.createElement('div');
     slider.className = 'week-slider';
     slider.id = 'weekSlider';
-
     weekRows.forEach((row, i) => {
       const slide = document.createElement('div');
       slide.className = 'week-slide';
-
       const header = document.createElement('div');
       header.className = 'week-slide-header';
       header.innerHTML = '<div class="week-slide-label">' + weekLabels[i] + '<span>semana</span></div><div class="week-slide-block">' + blockNames[i] + '</div>';
@@ -629,12 +825,8 @@
       slide.appendChild(row);
       slider.appendChild(slide);
     });
-
-    // Clear container and add slider + nav
     container.innerHTML = '';
     container.appendChild(slider);
-
-    // Build nav
     const nav = document.createElement('div');
     nav.className = 'week-nav';
     nav.id = 'weekNav';
@@ -642,10 +834,7 @@
                     '<span class="week-nav-counter" id="weekCounter">1 / ' + totalSlides + '</span>' +
                     '<button class="week-nav-btn" id="weekNext" onclick="slideWeek(1)">&#8594;</button>';
     document.body.appendChild(nav);
-
     updateSlider();
-
-    // Swipe support
     let startX = 0;
     slider.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
     slider.addEventListener('touchend', e => {
@@ -671,10 +860,153 @@
     updateSlider();
   }
 
-  // Init after DOM + data ready
+
+  // ---- NOTES SYSTEM ----
+  const NOTES_API = `${SUPABASE_URL}/rest/v1/notes`;
+  const notesCache = {}; // cardId -> array of note objects
+  let currentNoteCard = null;
+
+  // Load all notes once at startup
+  async function loadAllNotes() {
+    try {
+      const res = await fetch(`${NOTES_API}?select=id,card_id,user_id,text,created_at&order=created_at.asc`, { headers: HEADERS });
+      if (!res.ok) return;
+      const data = await res.json();
+      data.forEach(n => {
+        if (!notesCache[n.card_id]) notesCache[n.card_id] = [];
+        notesCache[n.card_id].push(n);
+      });
+      refreshNoteButtons();
+    } catch(e) { console.warn('Notes load failed:', e); }
+  }
+
+  function refreshNoteButtons() {
+    document.querySelectorAll('.note-btn').forEach(btn => {
+      const cardId = btn.getAttribute('onclick').match(/'(c\d+)'/)[1];
+      const hasNotes = notesCache[cardId] && notesCache[cardId].length > 0;
+      btn.classList.toggle('has-notes', hasNotes);
+      btn.title = hasNotes ? `${notesCache[cardId].length} nota(s)` : 'Añadir nota';
+    });
+  }
+
+  function openNotes(e, cardId) {
+    e.stopPropagation();
+    currentNoteCard = cardId;
+
+    // Get card title for panel header
+    const card = document.querySelector(`.day-card[data-id="${cardId}"]`);
+    const title = card ? card.querySelector('.day-type').textContent : cardId;
+    const sub = card ? card.querySelector('.day-name').textContent : '';
+    document.getElementById('notesPanelTitle').textContent = title;
+    document.getElementById('notesPanelSub').textContent = sub;
+
+    // Reset textarea
+    const ta = document.getElementById('notesTextarea');
+    ta.value = '';
+
+    // Show/hide compose based on login
+    const compose = document.getElementById('notesCompose');
+    if (!currentUser) {
+      compose.innerHTML = '<p class="notes-login-hint">Abre con ?#victor o #aina para añadir notas</p>';
+    } else {
+      compose.innerHTML = `
+        <div class="notes-compose-label">Añadir nota · <span style="color:var(--${currentUser})">${currentUser.charAt(0).toUpperCase()+currentUser.slice(1)}</span></div>
+        <textarea class="notes-textarea" id="notesTextarea" rows="3" placeholder="Ej: Sentadilla 20kg · sensaciones buenas..."></textarea>
+        <button class="notes-save" id="notesSaveBtn" onclick="saveNote()">Guardar</button>
+      `;
+    }
+
+    renderNotesList(cardId);
+    document.getElementById('notesOverlay').classList.add('open');
+  }
+
+  function renderNotesList(cardId) {
+    const list = document.getElementById('notesList');
+    const notes = notesCache[cardId] || [];
+    if (notes.length === 0) {
+      list.innerHTML = '<div class="notes-empty">Sin notas aún. ¡Sé el primero en añadir una!</div>';
+      return;
+    }
+    list.innerHTML = notes.map(n => {
+      const date = new Date(n.created_at);
+      const dateStr = date.toLocaleDateString('es-ES', { day:'numeric', month:'short' }) +
+                      ' ' + date.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
+      const canDelete = currentUser === n.user_id;
+      return `
+        <div class="note-item" data-note-id="${n.id}">
+          <div class="note-meta">
+            <div class="note-author-dot ${n.user_id}"></div>
+            <span class="note-author ${n.user_id}">${n.user_id.charAt(0).toUpperCase()+n.user_id.slice(1)}</span>
+            <span class="note-date">${dateStr}</span>
+            ${canDelete ? `<button class="note-delete" onclick="deleteNote('${n.id}','${cardId}')">✕</button>` : ''}
+          </div>
+          <div class="note-text">${escapeHtml(n.text)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function saveNote() {
+    if (!currentUser) return;
+    const ta = document.getElementById('notesTextarea');
+    const text = ta.value.trim();
+    if (!text) return;
+    const btn = document.getElementById('notesSaveBtn');
+    btn.disabled = true;
+    ta.disabled = true;
+    try {
+      const res = await fetch(NOTES_API, {
+        method: 'POST',
+        headers: { ...HEADERS, 'Prefer': 'return=representation' },
+        body: JSON.stringify({ card_id: currentNoteCard, user_id: currentUser, text })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const [newNote] = await res.json();
+      if (!notesCache[currentNoteCard]) notesCache[currentNoteCard] = [];
+      notesCache[currentNoteCard].push(newNote);
+      ta.value = '';
+      renderNotesList(currentNoteCard);
+      refreshNoteButtons();
+      // Scroll to bottom of list
+      const list = document.getElementById('notesList');
+      list.scrollTop = list.scrollHeight;
+    } catch(e) {
+      alert('Error al guardar: ' + e.message);
+    }
+    btn.disabled = false;
+    ta.disabled = false;
+  }
+
+  async function deleteNote(noteId, cardId) {
+    if (!currentUser) return;
+    if (!confirm('¿Eliminar esta nota?')) return;
+    try {
+      const res = await fetch(`${NOTES_API}?id=eq.${noteId}&user_id=eq.${currentUser}`, { method: 'DELETE', headers: HEADERS });
+      if (!res.ok) throw new Error(await res.text());
+      notesCache[cardId] = (notesCache[cardId] || []).filter(n => n.id !== noteId);
+      renderNotesList(cardId);
+      refreshNoteButtons();
+    } catch(e) {
+      alert('Error al eliminar: ' + e.message);
+    }
+  }
+
+  function closeNotes(e) {
+    if (e.target === document.getElementById('notesOverlay')) closeNotesPanel();
+  }
+  function closeNotesPanel() {
+    document.getElementById('notesOverlay').classList.remove('open');
+    currentNoteCard = null;
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNotesPanel(); });
+
   window.addEventListener('load', () => {
     if (window.innerWidth <= 750) initMobileSlider();
   });
 </script>
 </body>
 </html>
+
